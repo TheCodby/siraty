@@ -62,7 +62,7 @@ export class DocumentProcessor {
       const filledDocument = await createReport({
         template: templateBuffer,
         data: templateData,
-        cmdDelimiter: ["{{", "}}"],
+        cmdDelimiter: ["+++", "+++"],
         literalXmlDelimiter: "{{{",
         processLineBreaks: true,
         noSandbox: false, // Security: keep sandbox enabled
@@ -105,11 +105,7 @@ export class DocumentProcessor {
     const missingPlaceholders: string[] = [];
 
     // Check if template file exists
-    const templatePath = path.join(
-      process.cwd(),
-      "public",
-      template.wordFilePath
-    );
+    const templatePath = path.join(process.cwd(), template.wordFilePath);
     try {
       const stats = await fs.stat(templatePath);
       if (stats.size > this.maxFileSize) {
@@ -186,7 +182,7 @@ export class DocumentProcessor {
         .join(" | "),
 
       // Work Experience
-      WORK_EXPERIENCE: workExperience.map((exp) => ({
+      EXPERIENCES: workExperience.map((exp) => ({
         JOB_TITLE: this.sanitizeText(exp.jobTitle),
         COMPANY: this.sanitizeText(exp.company),
         LOCATION: this.sanitizeText(exp.location),
@@ -489,7 +485,7 @@ export class DocumentProcessor {
    */
   private async readTemplateFile(templatePath: string): Promise<Buffer> {
     try {
-      const fullPath = path.join(process.cwd(), "src", templatePath);
+      const fullPath = path.join(process.cwd(), templatePath);
       return await fs.readFile(fullPath);
     } catch {
       throw new Error(`Failed to read template file: ${templatePath}`);

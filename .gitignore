@@ -42,3 +42,4 @@ next-env.d.ts
 *.docx
 /src/lib/templates/word
 /src/lib/templates/previews
+/public/templates/previews

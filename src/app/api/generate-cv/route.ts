@@ -107,11 +107,35 @@ export async function POST(request: NextRequest) {
             `PDF conversion successful using ${pdfResult.method} in ${pdfResult.processingTime}ms`
           );
         } else {
-          console.warn("PDF conversion failed, continuing with Word-only");
+          console.warn("PDF conversion failed");
+          if (options.format === "pdf") {
+            // If only PDF was requested and conversion failed, return error
+            return NextResponse.json(
+              {
+                error: "PDF generation failed",
+                details:
+                  "Unable to convert Word document to PDF. Please try requesting Word format instead.",
+                processingTime: Date.now() - startTime,
+              },
+              { status: 500 }
+            );
+          }
         }
       } catch (error) {
         console.error("PDF conversion error:", error);
-        // Continue without PDF if conversion fails
+        if (options.format === "pdf") {
+          // If only PDF was requested and conversion failed, return error
+          return NextResponse.json(
+            {
+              error: "PDF generation failed",
+              details:
+                error instanceof Error ? error.message : "PDF conversion error",
+              processingTime: Date.now() - startTime,
+            },
+            { status: 500 }
+          );
+        }
+        // For "both" format, continue without PDF
       }
     }
 
@@ -122,8 +146,19 @@ export async function POST(request: NextRequest) {
 
     const processingTime = Date.now() - startTime;
 
-    // Single format responses (direct file download)
-    if (options.format === "pdf" && pdfBuffer) {
+    // PDF-only response
+    if (options.format === "pdf") {
+      if (!pdfBuffer) {
+        return NextResponse.json(
+          {
+            error: "PDF generation failed",
+            details: "PDF conversion was not successful",
+            processingTime,
+          },
+          { status: 500 }
+        );
+      }
+
       return new NextResponse(pdfBuffer, {
         headers: {
           "Content-Type": "application/pdf",
@@ -135,6 +170,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
+    // Word-only response
     if (options.format === "docx") {
       return new NextResponse(wordBuffer, {
         headers: {

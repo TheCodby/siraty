@@ -3,10 +3,13 @@
 import {
   FileText,
   Download,
-  Eye,
   CheckCircle,
   AlertCircle,
   Edit3,
+  Loader2,
+  AlertTriangle,
+  FileImage,
+  Settings,
 } from "lucide-react";
 import {
   Card,
@@ -16,9 +19,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Progress } from "@/components/ui/progress";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TemplateSelector } from "./TemplateSelector";
+import { useTemplateGeneration } from "../hooks/useTemplateGeneration";
 import type { CVData } from "@/types";
 
 interface ReviewFormProps {
@@ -37,6 +43,18 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
   onEditSection,
 }) => {
   const { personalInfo, workExperience, education, skills, projects } = cvData;
+
+  const {
+    selectedTemplate,
+    isGenerating,
+    generationProgress,
+    error,
+    lastGenerated,
+    selectTemplate,
+    generateCV,
+    downloadFile,
+    clearError,
+  } = useTemplateGeneration();
 
   const sections = [
     {
@@ -75,7 +93,48 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
     },
   ];
 
-  const isReadyForDownload = completionPercentage >= 80;
+  const isReadyForDownload = completionPercentage >= 80 && selectedTemplate;
+
+  const handleGenerateCV = async (format: "pdf" | "docx" | "both") => {
+    if (!selectedTemplate) {
+      return;
+    }
+
+    clearError();
+
+    try {
+      await generateCV(cvData, {
+        format,
+        language: "en", // You can make this dynamic based on user preference
+        fileName: `${personalInfo.fullName || "cv"}-${selectedTemplate.name
+          .toLowerCase()
+          .replace(/\s+/g, "-")}`,
+      });
+    } catch (error) {
+      console.error("Generation failed:", error);
+    }
+  };
+
+  const handleDownloadGenerated = (format: "pdf" | "docx") => {
+    if (!lastGenerated) return;
+
+    const fileData =
+      format === "pdf"
+        ? lastGenerated.files.pdf?.data
+        : lastGenerated.files.docx?.data;
+    const filename =
+      format === "pdf"
+        ? lastGenerated.files.pdf?.filename
+        : lastGenerated.files.docx?.filename;
+    const mimeType =
+      format === "pdf"
+        ? "application/pdf"
+        : "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+
+    if (fileData && filename) {
+      downloadFile(fileData, filename, mimeType);
+    }
+  };
 
   return (
     <Card>
@@ -85,7 +144,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
           Review & Download
         </CardTitle>
         <CardDescription>
-          Review your CV details and download when ready
+          Review your CV details, select a template, and download when ready
         </CardDescription>
       </CardHeader>
 
@@ -97,184 +156,311 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
             Your CV is {Math.round(completionPercentage)}% complete.{" "}
             {isReadyForDownload
               ? "Ready for download!"
-              : "Add more information to improve your CV."}
+              : selectedTemplate
+              ? "Add more information to improve your CV."
+              : "Select a template to continue."}
           </AlertDescription>
         </Alert>
 
-        {/* Section Review */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-foreground">
-            Section Review
-          </h3>
+        {/* Error Alert */}
+        {error && (
+          <Alert variant="destructive">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertDescription className="flex items-center justify-between">
+              <span>{error}</span>
+              <Button variant="outline" size="sm" onClick={clearError}>
+                Dismiss
+              </Button>
+            </AlertDescription>
+          </Alert>
+        )}
 
-          {sections.map((section) => {
-            const Icon = section.icon;
-            return (
-              <Card key={section.step} className="relative">
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <Icon className="h-5 w-5 text-muted-foreground" />
-                      <div>
-                        <h4 className="font-medium text-foreground">
-                          {section.title}
-                        </h4>
-                        <p className="text-sm text-muted-foreground">
-                          {section.isComplete ? "Complete" : "Incomplete"}
-                        </p>
+        {/* Generation Progress */}
+        {isGenerating && (
+          <Alert>
+            <Loader2 className="h-4 w-4 animate-spin" />
+            <AlertDescription className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span>Generating your CV...</span>
+                <span className="text-sm font-medium">
+                  {generationProgress}%
+                </span>
+              </div>
+              <Progress value={generationProgress} className="h-2" />
+            </AlertDescription>
+          </Alert>
+        )}
+
+        <Tabs defaultValue="review" className="w-full">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="review">Review Content</TabsTrigger>
+            <TabsTrigger value="template">Select Template</TabsTrigger>
+            <TabsTrigger value="download">Download Options</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="review" className="space-y-6">
+            {/* Section Review */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-foreground">
+                CV Sections
+              </h3>
+              <div className="grid gap-4">
+                {sections.map((section) => {
+                  const Icon = section.icon;
+                  return (
+                    <div
+                      key={section.step}
+                      className="flex items-center justify-between p-4 border rounded-lg"
+                    >
+                      <div className="flex items-center gap-3">
+                        <Icon className="h-5 w-5 text-muted-foreground" />
+                        <div>
+                          <p className="font-medium text-foreground">
+                            {section.title}
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            {section.isComplete ? "Complete" : "Incomplete"}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {section.isComplete ? (
+                          <CheckCircle className="h-5 w-5 text-green-500" />
+                        ) : (
+                          <AlertCircle className="h-5 w-5 text-orange-500" />
+                        )}
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => onEditSection(section.step)}
+                        >
+                          <Edit3 className="h-4 w-4 mr-1" />
+                          Edit
+                        </Button>
                       </div>
                     </div>
+                  );
+                })}
+              </div>
+            </div>
 
-                    <div className="flex items-center gap-2">
-                      {section.isComplete ? (
-                        <Badge variant="default" className="bg-green-500">
-                          <CheckCircle className="h-3 w-3 mr-1" />
-                          Complete
-                        </Badge>
-                      ) : (
-                        <Badge variant="destructive">
-                          <AlertCircle className="h-3 w-3 mr-1" />
-                          Incomplete
-                        </Badge>
-                      )}
+            {/* CV Summary */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-foreground">
+                CV Summary
+              </h3>
+              <div className="bg-muted rounded-lg p-6 space-y-4">
+                {/* Header */}
+                <div className="text-center border-b border-border pb-4">
+                  <h1 className="text-2xl font-bold text-foreground mb-2">
+                    {personalInfo.fullName || "Your Name"}
+                  </h1>
+                  <div className="text-sm text-muted-foreground space-y-1">
+                    {personalInfo.email && <div>{personalInfo.email}</div>}
+                    {personalInfo.phone && <div>{personalInfo.phone}</div>}
+                    {personalInfo.location && (
+                      <div>{personalInfo.location}</div>
+                    )}
+                  </div>
+                </div>
 
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => onEditSection(section.step)}
-                      >
-                        <Edit3 className="h-4 w-4" />
-                      </Button>
+                {/* Summary */}
+                {personalInfo.summary && (
+                  <div>
+                    <h3 className="text-sm font-semibold text-foreground mb-2">
+                      Professional Summary
+                    </h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed break-words">
+                      {personalInfo.summary}
+                    </p>
+                  </div>
+                )}
+
+                {/* Quick Stats */}
+                <div className="grid grid-cols-4 gap-4 pt-4 border-t border-border">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-primary">
+                      {workExperience.length}
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      Work Experiences
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-
-        <Separator />
-
-        {/* CV Summary */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-foreground">CV Summary</h3>
-
-          <div className="bg-muted rounded-lg p-6 space-y-4">
-            {/* Header */}
-            <div className="text-center border-b border-border pb-4">
-              <h1 className="text-2xl font-bold text-foreground mb-2">
-                {personalInfo.fullName || "Your Name"}
-              </h1>
-              <div className="text-sm text-muted-foreground space-y-1">
-                {personalInfo.email && <div>{personalInfo.email}</div>}
-                {personalInfo.phone && <div>{personalInfo.phone}</div>}
-                {personalInfo.location && <div>{personalInfo.location}</div>}
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-primary">
+                      {education.length}
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      Education Entries
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-primary">
+                      {skills.length}
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      Skills Listed
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-primary">
+                      {projects.length}
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      Projects Showcased
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
+          </TabsContent>
 
-            {/* Summary */}
-            {personalInfo.summary && (
-              <div>
-                <h3 className="text-sm font-semibold text-foreground mb-2">
-                  Professional Summary
-                </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed break-words">
-                  {personalInfo.summary}
-                </p>
-              </div>
+          <TabsContent value="template" className="space-y-6">
+            <TemplateSelector
+              cvData={cvData}
+              selectedTemplate={selectedTemplate}
+              onSelectTemplate={selectTemplate}
+            />
+          </TabsContent>
+
+          <TabsContent value="download" className="space-y-6">
+            {/* Template Selection Status */}
+            {selectedTemplate ? (
+              <Alert>
+                <Settings className="h-4 w-4" />
+                <AlertDescription>
+                  <strong>Selected Template:</strong> {selectedTemplate.name} -{" "}
+                  {selectedTemplate.description}
+                </AlertDescription>
+              </Alert>
+            ) : (
+              <Alert>
+                <AlertTriangle className="h-4 w-4" />
+                <AlertDescription>
+                  Please select a template from the &quot;Select Template&quot;
+                  tab before downloading.
+                </AlertDescription>
+              </Alert>
             )}
 
-            {/* Quick Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-primary">
-                  {workExperience.length}
-                </div>
-                <div className="text-xs text-muted-foreground">
-                  Work Experiences
-                </div>
+            {/* Download Options */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-foreground">
+                Download Options
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Button
+                  variant="outline"
+                  className="h-auto p-4"
+                  disabled={!isReadyForDownload || isGenerating}
+                  onClick={() => handleGenerateCV("pdf")}
+                >
+                  <div className="text-center">
+                    <FileImage className="h-6 w-6 mx-auto mb-2" />
+                    <div className="font-medium">Download PDF</div>
+                    <div className="text-xs text-muted-foreground">
+                      Perfect for applications
+                    </div>
+                  </div>
+                </Button>
+
+                <Button
+                  variant="outline"
+                  className="h-auto p-4"
+                  disabled={!isReadyForDownload || isGenerating}
+                  onClick={() => handleGenerateCV("docx")}
+                >
+                  <div className="text-center">
+                    <FileText className="h-6 w-6 mx-auto mb-2" />
+                    <div className="font-medium">Download Word</div>
+                    <div className="text-xs text-muted-foreground">
+                      Editable document
+                    </div>
+                  </div>
+                </Button>
+
+                <Button
+                  className="h-auto p-4"
+                  disabled={!isReadyForDownload || isGenerating}
+                  onClick={() => handleGenerateCV("both")}
+                >
+                  <div className="text-center">
+                    <Download className="h-6 w-6 mx-auto mb-2" />
+                    <div className="font-medium">Download Both</div>
+                    <div className="text-xs text-muted-foreground">
+                      PDF + Word files
+                    </div>
+                  </div>
+                </Button>
               </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-primary">
-                  {education.length}
-                </div>
-                <div className="text-xs text-muted-foreground">
-                  Education Entries
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-primary">
-                  {skills.length}
-                </div>
-                <div className="text-xs text-muted-foreground">
-                  Skills Listed
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-primary">
-                  {projects.length}
-                </div>
-                <div className="text-xs text-muted-foreground">
-                  Projects Showcased
-                </div>
-              </div>
+
+              {/* Generated Files */}
+              {lastGenerated && (
+                <Card className="bg-green-50 border-green-200">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-lg text-green-800">
+                      ✅ CV Generated Successfully!
+                    </CardTitle>
+                    <CardDescription className="text-green-600">
+                      Your CV has been generated and is ready for download.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <div className="flex flex-wrap gap-2">
+                      {lastGenerated.files.pdf && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleDownloadGenerated("pdf")}
+                          className="border-green-300 text-green-700 hover:bg-green-100"
+                        >
+                          <FileImage className="h-4 w-4 mr-1" />
+                          Download PDF
+                        </Button>
+                      )}
+                      {lastGenerated.files.docx && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleDownloadGenerated("docx")}
+                          className="border-green-300 text-green-700 hover:bg-green-100"
+                        >
+                          <FileText className="h-4 w-4 mr-1" />
+                          Download Word
+                        </Button>
+                      )}
+                    </div>
+                    <div className="text-sm text-green-600">
+                      <strong>Template:</strong>{" "}
+                      {lastGenerated.metadata.templateUsed} |
+                      <strong> Generated:</strong>{" "}
+                      {new Date(
+                        lastGenerated.metadata.generatedAt
+                      ).toLocaleString()}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {!isReadyForDownload && (
+                <Alert>
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>
+                    {!selectedTemplate
+                      ? "Please select a template to enable download."
+                      : "Complete at least 80% of your CV to enable download. Focus on adding more work experience and skills."}
+                  </AlertDescription>
+                </Alert>
+              )}
             </div>
-          </div>
-        </div>
-
-        <Separator />
-
-        {/* Download Actions */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-foreground">
-            Download Options
-          </h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Button
-              variant="outline"
-              className="h-auto p-4"
-              disabled={!isReadyForDownload}
-            >
-              <div className="text-center">
-                <Eye className="h-6 w-6 mx-auto mb-2" />
-                <div className="font-medium">Preview PDF</div>
-                <div className="text-xs text-muted-foreground">
-                  Preview before download
-                </div>
-              </div>
-            </Button>
-
-            <Button
-              className="h-auto p-4"
-              onClick={onDownload}
-              disabled={!isReadyForDownload}
-            >
-              <div className="text-center">
-                <Download className="h-6 w-6 mx-auto mb-2" />
-                <div className="font-medium">Download PDF</div>
-                <div className="text-xs text-muted-foreground">
-                  Get your professional CV
-                </div>
-              </div>
-            </Button>
-          </div>
-
-          {!isReadyForDownload && (
-            <Alert>
-              <AlertCircle className="h-4 w-4" />
-              <AlertDescription>
-                Complete at least 80% of your CV to enable download. Focus on
-                adding more work experience and skills.
-              </AlertDescription>
-            </Alert>
-          )}
-        </div>
+          </TabsContent>
+        </Tabs>
 
         <Separator />
 
         {/* Navigation Buttons */}
-        <div className="flex justify-between pt-4">
+        <div className="flex justify-between">
           <Button variant="outline" onClick={onPrevious}>
             Previous
           </Button>
@@ -285,7 +471,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
             className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
           >
             <Download className="h-4 w-4 mr-2" />
-            Download CV
+            Continue to Export
           </Button>
         </div>
       </CardContent>

@@ -1,8 +1,13 @@
 /**
  * PDF Generation Service
- * Converts Word documents to PDF format using multiple conversion strategies
+ * Converts Word documents to PDF format using direct conversion tools
+ *
+ * Supported Methods:
+ * - LibreOffice (preferred): Direct docx-to-pdf conversion with excellent formatting preservation
+ * - Pandoc (fallback): Direct docx-to-pdf conversion with good formatting support
  *
  * Best Practices Implemented:
+ * - Direct conversion only (no HTML intermediary)
  * - Multiple conversion strategies with fallbacks
  * - Proper error handling and logging
  * - Memory management for large files
@@ -15,7 +20,6 @@ import { exec } from "child_process";
 import { promisify } from "util";
 import { promises as fs } from "fs";
 import * as path from "path";
-import puppeteer from "puppeteer";
 
 const execAsync = promisify(exec);
 
@@ -34,7 +38,7 @@ interface ConversionOptions {
 interface ConversionResult {
   success: boolean;
   buffer?: Buffer;
-  method: "libreoffice" | "pandoc" | "puppeteer";
+  method: "libreoffice" | "pandoc";
   processingTime: number;
   fileSize: number;
   error?: string;
@@ -66,11 +70,10 @@ export class PDFGenerator {
       );
     }
 
-    // Try conversion methods in order of preference
+    // Try direct conversion methods only (no HTML intermediary)
     const methods = [
       () => this.convertWithLibreOffice(wordBuffer, options),
       () => this.convertWithPandoc(wordBuffer, options),
-      () => this.convertWithPuppeteer(wordBuffer, options),
     ];
 
     let lastError: Error | undefined;
@@ -94,7 +97,7 @@ export class PDFGenerator {
     }
 
     throw new Error(
-      `All conversion methods failed. Last error: ${lastError?.message}`
+      `Direct Word-to-PDF conversion failed. Please ensure LibreOffice or Pandoc is installed. Last error: ${lastError?.message}`
     );
   }
 
@@ -113,7 +116,6 @@ export class PDFGenerator {
       .substr(2, 9)}`;
     const tempWordPath = path.join(this.tempDir, `${tempId}.docx`);
     const outputDir = path.join(this.tempDir, tempId);
-    const expectedPdfPath = path.join(outputDir, `${tempId}.pdf`);
 
     try {
       // Create output directory
@@ -125,10 +127,9 @@ export class PDFGenerator {
       // Prepare LibreOffice command with options
       const timeoutMs = options.timeout || this.defaultTimeout;
       const command = [
-        "libreoffice",
-        "--headless",
+        "soffice",
         "--convert-to",
-        "pdf",
+        "pdf:writer_pdf_Export",
         "--outdir",
         `"${outputDir}"`,
         `"${tempWordPath}"`,
@@ -250,117 +251,6 @@ export class PDFGenerator {
   }
 
   /**
-   * Convert using Puppeteer (fallback method - less accurate)
-   */
-  private async convertWithPuppeteer(
-    wordBuffer: Buffer,
-    options: ConversionOptions
-  ): Promise<ConversionResult> {
-    const startTime = Date.now();
-
-    let browser: puppeteer.Browser | undefined;
-
-    try {
-      // This is a simplified fallback - in reality, you'd need to convert
-      // the Word document to HTML first, which is complex
-      browser = await puppeteer.launch({
-        headless: true,
-        args: [
-          "--no-sandbox",
-          "--disable-setuid-sandbox",
-          "--disable-dev-shm-usage",
-          "--disable-web-security",
-        ],
-      });
-
-      const page = await browser.newPage();
-
-      // This is a placeholder - you'd need proper Word-to-HTML conversion
-      const htmlContent = `
-        <!DOCTYPE html>
-        <html>
-          <head>
-            <meta charset="utf-8">
-            <style>
-              body { 
-                font-family: 'Times New Roman', serif; 
-                font-size: 12pt;
-                line-height: 1.6;
-                margin: 0;
-                padding: 1in;
-              }
-              .cv-header { text-align: center; margin-bottom: 20px; }
-              .cv-section { margin-bottom: 15px; }
-              .cv-section h2 { 
-                font-size: 14pt; 
-                font-weight: bold; 
-                margin-bottom: 10px; 
-                border-bottom: 1px solid #333;
-              }
-              @media print {
-                body { margin: 0; }
-                .page-break { page-break-before: always; }
-              }
-            </style>
-          </head>
-          <body>
-            <div class="cv-content">
-              <div class="cv-header">
-                <h1>CV Document</h1>
-                <p>Converted from Word document using fallback method</p>
-              </div>
-              <div class="cv-section">
-                <h2>Note</h2>
-                <p>This is a fallback conversion method. For better results, please ensure LibreOffice or Pandoc is installed on the system.</p>
-              </div>
-            </div>
-          </body>
-        </html>
-      `;
-
-      await page.setContent(htmlContent, { waitUntil: "networkidle0" });
-
-      const margins = options.margin || {
-        top: 0.5,
-        right: 0.5,
-        bottom: 0.5,
-        left: 0.5,
-      };
-      const format = options.format === "Letter" ? "letter" : "a4";
-
-      const pdfBuffer = await page.pdf({
-        format: format as any,
-        margin: {
-          top: `${margins.top}in`,
-          right: `${margins.right}in`,
-          bottom: `${margins.bottom}in`,
-          left: `${margins.left}in`,
-        },
-        printBackground: true,
-        preferCSSPageSize: true,
-      });
-
-      return {
-        success: true,
-        buffer: Buffer.from(pdfBuffer),
-        method: "puppeteer",
-        processingTime: Date.now() - startTime,
-        fileSize: pdfBuffer.length,
-      };
-    } catch (error) {
-      throw new Error(
-        `Puppeteer conversion failed: ${
-          error instanceof Error ? error.message : "Unknown error"
-        }`
-      );
-    } finally {
-      if (browser) {
-        await browser.close();
-      }
-    }
-  }
-
-  /**
    * Execute command with timeout
    */
   private async execWithTimeout(
@@ -397,12 +287,10 @@ export class PDFGenerator {
   async checkAvailableTools(): Promise<{
     libreoffice: boolean;
     pandoc: boolean;
-    puppeteer: boolean;
   }> {
     const tools = {
       libreoffice: false,
       pandoc: false,
-      puppeteer: false,
     };
 
     // Check LibreOffice
@@ -420,9 +308,6 @@ export class PDFGenerator {
     } catch {
       console.warn("Pandoc not available");
     }
-
-    // Check Puppeteer (always available as it's a Node package)
-    tools.puppeteer = true;
 
     return tools;
   }
@@ -459,13 +344,14 @@ export class PDFGenerator {
   /**
    * Get recommended conversion method based on available tools
    */
-  async getRecommendedMethod(): Promise<
-    "libreoffice" | "pandoc" | "puppeteer"
-  > {
+  async getRecommendedMethod(): Promise<"libreoffice" | "pandoc"> {
     const tools = await this.checkAvailableTools();
 
     if (tools.libreoffice) return "libreoffice";
     if (tools.pandoc) return "pandoc";
-    return "puppeteer";
+
+    throw new Error(
+      "No direct Word-to-PDF conversion tools available. Please install LibreOffice or Pandoc."
+    );
   }
 }

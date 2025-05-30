@@ -1,10 +1,10 @@
-export { StepIndicator } from "./StepIndicator";
-export type { Step } from "./StepIndicator";
-export { FormField } from "./FormField";
 export { CVPreview } from "./CVPreview";
+export { FormField } from "./FormField";
 export { PersonalInfoForm } from "./PersonalInfoForm";
 export { WorkExperienceForm } from "./WorkExperienceForm";
 export { EducationForm } from "./EducationForm";
 export { SkillsProjectsForm } from "./SkillsProjectsForm";
 export { ReviewForm } from "./ReviewForm";
+export { StepIndicator } from "./StepIndicator";
+export { TemplateSelector } from "./TemplateSelector";
 export { StepPlaceholder } from "./StepPlaceholder";
