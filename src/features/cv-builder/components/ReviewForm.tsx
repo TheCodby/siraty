@@ -178,7 +178,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
                 <h3 className="text-sm font-semibold text-foreground mb-2">
                   Professional Summary
                 </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
+                <p className="text-sm text-muted-foreground leading-relaxed break-words">
                   {personalInfo.summary}
                 </p>
               </div>
