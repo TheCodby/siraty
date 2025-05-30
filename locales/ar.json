@@ -1,0 +1,172 @@
+{
+  "navigation": {
+    "home": "الرئيسية",
+    "createCV": "إنشاء السيرة الذاتية",
+    "improveCV": "تحسين السيرة الذاتية",
+    "matchJD": "مطابقة الوظيفة",
+    "atsScore": "نقاط النظام الآلي",
+    "language": "اللغة"
+  },
+  "home": {
+    "title": "سيرتي - مدربك المهني الذكي",
+    "subtitle": "أنشئ وحسّن واجعل سيرتك الذاتية مُحسّنة بمساعدة الذكاء الاصطناعي",
+    "features": {
+      "createCV": {
+        "title": "إنشاء سيرة ذاتية احترافية",
+        "description": "ابن سيرتك الذاتية خطوة بخطوة باستخدام نموذجنا السهل"
+      },
+      "improveCV": {
+        "title": "تحسينات مدعومة بالذكاء الاصطناعي",
+        "description": "تحدث مع الذكاء الاصطناعي لتحسين محتوى سيرتك الذاتية"
+      },
+      "matchJD": {
+        "title": "مطابقة الوصف الوظيفي",
+        "description": "اكتشف مدى مطابقة سيرتك الذاتية لمتطلبات الوظيفة المحددة"
+      },
+      "atsScore": {
+        "title": "تحسين النظام الآلي",
+        "description": "احصل على نقاطك في النظام الآلي واقتراحات التحسين المفصلة"
+      }
+    },
+    "getStarted": "ابدأ الآن",
+    "learnMore": "اعرف المزيد"
+  },
+  "cvBuilder": {
+    "title": "إنشاء سيرتك الذاتية",
+    "steps": {
+      "personal": "المعلومات الشخصية",
+      "experience": "الخبرة العملية",
+      "education": "التعليم",
+      "skills": "المهارات",
+      "projects": "المشاريع",
+      "certifications": "الشهادات",
+      "review": "المراجعة والتصدير"
+    },
+    "personalInfo": {
+      "fullName": "الاسم الكامل",
+      "email": "البريد الإلكتروني",
+      "phone": "رقم الهاتف",
+      "location": "الموقع",
+      "linkedIn": "الملف الشخصي في لينكد إن",
+      "portfolio": "موقع المعرض الشخصي",
+      "summary": "الملخص المهني"
+    },
+    "workExperience": {
+      "jobTitle": "المسمى الوظيفي",
+      "company": "الشركة",
+      "location": "الموقع",
+      "startDate": "تاريخ البداية",
+      "endDate": "تاريخ النهاية",
+      "currentRole": "أعمل هنا حالياً",
+      "description": "وصف الوظيفة",
+      "achievements": "الإنجازات الرئيسية",
+      "technologies": "التقنيات المستخدمة",
+      "addExperience": "إضافة خبرة",
+      "editExperience": "تعديل الخبرة"
+    },
+    "education": {
+      "degree": "الدرجة العلمية",
+      "institution": "المؤسسة التعليمية",
+      "location": "الموقع",
+      "graduationDate": "تاريخ التخرج",
+      "gpa": "المعدل التراكمي",
+      "honors": "مرتبة الشرف",
+      "relevantCourses": "المواد ذات الصلة",
+      "addEducation": "إضافة تعليم",
+      "editEducation": "تعديل التعليم"
+    },
+    "skills": {
+      "name": "اسم المهارة",
+      "category": "الفئة",
+      "level": "مستوى الإتقان",
+      "categories": {
+        "technical": "تقنية",
+        "soft": "مهارات شخصية",
+        "language": "لغات"
+      },
+      "levels": {
+        "beginner": "مبتدئ",
+        "intermediate": "متوسط",
+        "advanced": "متقدم",
+        "expert": "خبير"
+      },
+      "addSkill": "إضافة مهارة"
+    },
+    "projects": {
+      "name": "اسم المشروع",
+      "description": "الوصف",
+      "technologies": "التقنيات",
+      "startDate": "تاريخ البداية",
+      "endDate": "تاريخ النهاية",
+      "link": "رابط المشروع",
+      "repository": "المستودع",
+      "addProject": "إضافة مشروع"
+    },
+    "certifications": {
+      "name": "اسم الشهادة",
+      "issuer": "الجهة المُصدرة",
+      "date": "تاريخ الحصول",
+      "expiryDate": "تاريخ الانتهاء",
+      "credentialId": "رقم الاعتماد",
+      "link": "رابط التحقق",
+      "addCertification": "إضافة شهادة"
+    }
+  },
+  "aiChat": {
+    "title": "المدرب المهني الذكي",
+    "placeholder": "اسألني أي شيء عن تحسين سيرتك الذاتية...",
+    "send": "إرسال",
+    "thinking": "الذكاء الاصطناعي يفكر...",
+    "suggestions": {
+      "improve": "كيف يمكنني تحسين سيرتي الذاتية؟",
+      "keywords": "ما الكلمات المفتاحية التي يجب إضافتها؟",
+      "format": "هل تنسيقي متوافق مع النظام الآلي؟",
+      "experience": "كيف يمكنني وصف خبرتي بشكل أفضل؟"
+    }
+  },
+  "jobMatching": {
+    "title": "مطابقة الوصف الوظيفي",
+    "pasteJD": "الصق الوصف الوظيفي",
+    "analyze": "تحليل المطابقة",
+    "results": {
+      "overallMatch": "المطابقة العامة",
+      "skillsMatch": "مطابقة المهارات",
+      "experienceMatch": "مطابقة الخبرة",
+      "educationMatch": "مطابقة التعليم",
+      "recommendations": "التوصيات",
+      "improvementAreas": "مجالات التحسين"
+    }
+  },
+  "atsScore": {
+    "title": "تحليل نقاط النظام الآلي",
+    "subtitle": "اكتشف كيف تؤدي سيرتك الذاتية مع أنظمة تتبع المتقدمين",
+    "analyze": "تحليل السيرة الذاتية",
+    "results": {
+      "overall": "النقاط العامة",
+      "formatting": "التنسيق",
+      "keywords": "الكلمات المفتاحية",
+      "experience": "الخبرة",
+      "education": "التعليم",
+      "skills": "المهارات",
+      "estimatedPassRate": "معدل النجاح المتوقع",
+      "recommendations": "التوصيات"
+    }
+  },
+  "common": {
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "next": "التالي",
+    "previous": "السابق",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "add": "إضافة",
+    "export": "تصدير",
+    "download": "تحميل",
+    "upload": "رفع",
+    "loading": "جاري التحميل...",
+    "error": "حدث خطأ",
+    "success": "نجح",
+    "required": "هذا الحقل مطلوب",
+    "optional": "اختياري"
+  }
+}

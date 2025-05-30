@@ -1,0 +1,172 @@
+{
+  "navigation": {
+    "home": "Home",
+    "createCV": "Create CV",
+    "improveCV": "Improve CV",
+    "matchJD": "Match Job",
+    "atsScore": "ATS Score",
+    "language": "Language"
+  },
+  "home": {
+    "title": "سيرتي - Your AI Career Coach",
+    "subtitle": "Create, improve, and optimize your resume with AI assistance",
+    "features": {
+      "createCV": {
+        "title": "Create Professional CV",
+        "description": "Build your resume step-by-step with our intuitive form"
+      },
+      "improveCV": {
+        "title": "AI-Powered Improvements",
+        "description": "Chat with our AI to enhance your resume content"
+      },
+      "matchJD": {
+        "title": "Job Description Matching",
+        "description": "See how well your CV matches specific job requirements"
+      },
+      "atsScore": {
+        "title": "ATS Optimization",
+        "description": "Get your ATS score and detailed improvement suggestions"
+      }
+    },
+    "getStarted": "Get Started",
+    "learnMore": "Learn More"
+  },
+  "cvBuilder": {
+    "title": "Create Your CV",
+    "steps": {
+      "personal": "Personal Information",
+      "experience": "Work Experience",
+      "education": "Education",
+      "skills": "Skills",
+      "projects": "Projects",
+      "certifications": "Certifications",
+      "review": "Review & Export"
+    },
+    "personalInfo": {
+      "fullName": "Full Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "location": "Location",
+      "linkedIn": "LinkedIn Profile",
+      "portfolio": "Portfolio Website",
+      "summary": "Professional Summary"
+    },
+    "workExperience": {
+      "jobTitle": "Job Title",
+      "company": "Company",
+      "location": "Location",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "currentRole": "I currently work here",
+      "description": "Job Description",
+      "achievements": "Key Achievements",
+      "technologies": "Technologies Used",
+      "addExperience": "Add Experience",
+      "editExperience": "Edit Experience"
+    },
+    "education": {
+      "degree": "Degree",
+      "institution": "Institution",
+      "location": "Location",
+      "graduationDate": "Graduation Date",
+      "gpa": "GPA",
+      "honors": "Honors",
+      "relevantCourses": "Relevant Courses",
+      "addEducation": "Add Education",
+      "editEducation": "Edit Education"
+    },
+    "skills": {
+      "name": "Skill Name",
+      "category": "Category",
+      "level": "Proficiency Level",
+      "categories": {
+        "technical": "Technical",
+        "soft": "Soft Skills",
+        "language": "Languages"
+      },
+      "levels": {
+        "beginner": "Beginner",
+        "intermediate": "Intermediate",
+        "advanced": "Advanced",
+        "expert": "Expert"
+      },
+      "addSkill": "Add Skill"
+    },
+    "projects": {
+      "name": "Project Name",
+      "description": "Description",
+      "technologies": "Technologies",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "link": "Project Link",
+      "repository": "Repository",
+      "addProject": "Add Project"
+    },
+    "certifications": {
+      "name": "Certification Name",
+      "issuer": "Issuing Organization",
+      "date": "Date Obtained",
+      "expiryDate": "Expiry Date",
+      "credentialId": "Credential ID",
+      "link": "Verification Link",
+      "addCertification": "Add Certification"
+    }
+  },
+  "aiChat": {
+    "title": "AI Career Coach",
+    "placeholder": "Ask me anything about improving your CV...",
+    "send": "Send",
+    "thinking": "AI is thinking...",
+    "suggestions": {
+      "improve": "How can I improve my CV?",
+      "keywords": "What keywords should I add?",
+      "format": "Is my formatting ATS-friendly?",
+      "experience": "How can I better describe my experience?"
+    }
+  },
+  "jobMatching": {
+    "title": "Job Description Matching",
+    "pasteJD": "Paste Job Description",
+    "analyze": "Analyze Match",
+    "results": {
+      "overallMatch": "Overall Match",
+      "skillsMatch": "Skills Match",
+      "experienceMatch": "Experience Match",
+      "educationMatch": "Education Match",
+      "recommendations": "Recommendations",
+      "improvementAreas": "Areas for Improvement"
+    }
+  },
+  "atsScore": {
+    "title": "ATS Score Analysis",
+    "subtitle": "See how your CV performs with Applicant Tracking Systems",
+    "analyze": "Analyze CV",
+    "results": {
+      "overall": "Overall Score",
+      "formatting": "Formatting",
+      "keywords": "Keywords",
+      "experience": "Experience",
+      "education": "Education",
+      "skills": "Skills",
+      "estimatedPassRate": "Estimated Pass Rate",
+      "recommendations": "Recommendations"
+    }
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "next": "Next",
+    "previous": "Previous",
+    "edit": "Edit",
+    "delete": "Delete",
+    "add": "Add",
+    "export": "Export",
+    "download": "Download",
+    "upload": "Upload",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "required": "This field is required",
+    "optional": "Optional"
+  }
+}

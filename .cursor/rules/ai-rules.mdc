@@ -1,0 +1,14 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+AI Flow Architecture
+Break AI communication into 3 layers:
+
+api/chat/route.ts: Handles request parsing and OpenAI calls.
+
+lib/openai.ts: Abstract OpenAI API calls (e.g., sendMessage, scoreCV).
+
+
+features/ai-chat/hooks/useChat.ts: Hook for frontend state + API communication.

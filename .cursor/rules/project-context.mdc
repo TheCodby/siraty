@@ -1,0 +1,25 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+
+You are my senior AI pair programmer. I’m building a bilingual (Arabic/English) AI-powered career coaching tool called "سيرتي" using Next.js 15 (App Router). The app helps users:
+
+1. Create and edit CVs (resumes) via a dynamic form or AI chat.
+2. Match CVs with job descriptions and show alignment.
+3. Score the CV based on ATS criteria (clarity, keyword match, formatting, etc.).
+4. Chat with the AI assistant in Arabic or English to iteratively improve their CV.
+
+Please help me:
+
+- Scaffold a clean, scalable Next.js 15 project structure with App Router.
+- Use Tailwind CSS for styling and i18n support (e.g., `next-intl` or `next-translate`).
+- Set up a UI with these pages: `Home`, `Create CV`, `Improve CV`, `Match JD`, `ATS Score`, and `Chat Assistant`.
+- Add localization and right-to-left support for Arabic.
+- Include placeholder components and mock data for CVs and job descriptions.
+- Use TypeScript and modular file organization (components, utils, services, etc.).
+- Plan how the AI chat will interact with the backend (e.g., OpenAI API or other LLMs).
+- Suggest file/folder structure, routing strategy, and best practices for maintainability.
+
+Output the full project plan first, then start generating code step-by-step. Explain briefly what each part does before showing code.

@@ -1,0 +1,103 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# 🏗️ Project Architecture for "سيرتي" - Career Coaching AI Tool
+
+## 📦 Tech Stack
+- **Framework**: Next.js 15 (App Router)
+- **Styling**: Tailwind CSS
+- **State Management**: Zustand or Context API
+- **Language Support**: next-intl (for i18n and RTL)
+- **Backend**: API routes (for LLM interaction), optional FastAPI microservice
+- **Database**: PostgreSQL with Prisma ORM (optional for persistence)
+- **AI Integration**: OpenAI GPT (via API)
+- **PDF Generation**: Puppeteer
+
+---
+
+## 📁 Feature-Based Folder Structure (Clean Architecture)
+
+```
+src/
+├── app/                    # Next.js app directory
+│   ├── layout.tsx         # Root layout with language/theme setup
+│   ├── page.tsx           # Home page
+│   ├── create-cv/         # CV builder flow
+│   ├── improve-cv/        # AI enhancement chat
+│   ├── match-jd/          # JD matcher
+│   ├── ats-score/         # ATS grader and report
+│   └── api/               # API routes
+│       ├── chat/route.ts  # AI chat endpoint
+│       └── score/route.ts # ATS scoring logic
+│
+├── features/
+│   ├── cv-builder/
+│   │   ├── components/
+│   │   ├── utils/
+│   │   └── hooks/
+│   ├── jd-matching/
+│   ├── ats-grading/
+│   └── ai-chat/
+│
+├── components/            # Shared UI components
+│   ├── layout/
+│   └── ui/
+│
+├── lib/                   # Utilities and helpers
+│   ├── openai.ts          # OpenAI API client
+│   └── ats.ts             # ATS scoring functions
+│
+├── locales/               # i18n translation files
+│   ├── en/
+│   └── ar/
+│
+├── middleware.ts          # i18n middleware for Next.js
+├── types/                 # TypeScript types/interfaces
+├── styles/                # Tailwind config and global styles
+└── config/                # App-wide constants and config
+```
+
+---
+
+## 🔄 Clean Architecture Principles
+
+- **Separation of Concerns**: Each `feature` handles its UI, logic, and state.
+- **Reusable Components**: Shared UI lives in `components/ui`.
+- **Domain Isolation**: Business logic is encapsulated in `lib/` and `features/*/utils`.
+- **Type Safety**: All API and state types in `types/`.
+- **Scalable**: New features can be added in `features/` and routed via `app/`.
+
+---
+
+## 🗂 Suggested Pages
+| Route           | Purpose                            |
+|----------------|-------------------------------------|
+| `/`            | Homepage                            |
+| `/create-cv`   | CV creation (step-by-step form)     |
+| `/improve-cv`  | AI-powered CV enhancement chat      |
+| `/match-jd`    | Match user CV with a job description|
+| `/ats-score`   | Display ATS score and feedback      |
+
+---
+
+## 🌐 Language Support
+- Use `next-intl` to load messages from `locales/en` and `locales/ar`.
+- Apply RTL direction in `layout.tsx` if Arabic is selected.
+
+---
+
+## 🧠 AI Integration
+- AI chat and JD matching connect to `/api/chat/route.ts`
+- ATS scoring logic in `/api/score/route.ts`
+- Calls made via fetch/Axios with proper error handling
+
+---
+
+## 🧪 Future Enhancements
+- User authentication (if needed)
+- PDF export for final CV
+- Database integration (PostgreSQL + Prisma)
+
+- AI memory/context for better chat experience
