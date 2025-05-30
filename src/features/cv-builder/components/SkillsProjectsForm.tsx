@@ -334,15 +334,28 @@ export const SkillsProjectsForm: React.FC<SkillsProjectsFormProps> = ({
                           )}
                         </div>
 
-                        <FormField
-                          label="Category"
-                          value={skill.category}
-                          onChange={(value) =>
-                            updateSkill(skill.id, "category", value)
-                          }
-                          placeholder="e.g. Programming, Design"
-                          error={errors.skills[skill.id]?.category}
-                        />
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium text-foreground">
+                            Category <span className="text-destructive">*</span>
+                          </label>
+                          <select
+                            className="w-full px-3 py-2 text-sm border border-input bg-background rounded-md"
+                            value={skill.category}
+                            onChange={(e) =>
+                              updateSkill(skill.id, "category", e.target.value)
+                            }
+                          >
+                            <option value="">Select category</option>
+                            <option value="technical">Technical</option>
+                            <option value="soft">Soft Skills</option>
+                            <option value="language">Language</option>
+                          </select>
+                          {errors.skills[skill.id]?.category && (
+                            <p className="text-sm text-destructive">
+                              {errors.skills[skill.id]?.category}
+                            </p>
+                          )}
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
