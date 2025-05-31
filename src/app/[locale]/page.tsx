@@ -317,7 +317,7 @@ export default function HomePage() {
             Building better careers with AI-powered tools
           </p>
           <p className="text-gray-500 text-sm">
-            © 2024 Siraty. All rights reserved.
+            © {new Date().getFullYear()} Siraty. All rights reserved.
           </p>
         </div>
       </footer>
