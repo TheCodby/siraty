@@ -36,6 +36,8 @@ dev_start() {
     print_success "Development environment started!"
     print_status "Application: http://localhost:3000"
     print_status "pgAdmin: http://localhost:5050 (admin@siraty.com / admin)"
+    print_status "Watching logs..."
+    docker-compose logs -f app
 }
 
 dev_stop() {
@@ -46,7 +48,7 @@ dev_stop() {
 
 dev_restart() {
     print_status "Restarting development environment..."
-    docker-compose restart
+    docker-compose restart app
     print_success "Development environment restarted!"
 }
 
@@ -63,8 +65,11 @@ dev_shell() {
 # Production commands
 prod_start() {
     print_status "Starting production environment..."
+    print_warning "Note: Nginx should be configured on the host to proxy to localhost:3000"
     docker-compose -f docker-compose.prod.yml up -d
     print_success "Production environment started!"
+    print_status "Application running on: http://localhost:3000 (internal)"
+    print_warning "Configure your host nginx to proxy external traffic to localhost:3000"
 }
 
 prod_stop() {
@@ -79,10 +84,28 @@ prod_logs() {
 }
 
 # Database commands
+db_push() {
+    print_status "Pushing Prisma schema to database..."
+    docker-compose exec app npx prisma db push
+    print_success "Database schema pushed!"
+}
+
 db_migrate() {
     print_status "Running database migrations..."
     docker-compose exec app npx prisma migrate deploy
     print_success "Database migrations completed!"
+}
+
+db_generate() {
+    print_status "Generating Prisma client..."
+    docker-compose exec app npx prisma generate
+    print_success "Prisma client generated!"
+}
+
+db_studio() {
+    print_status "Opening Prisma Studio..."
+    print_warning "Prisma Studio will open at http://localhost:5555"
+    docker-compose exec app npx prisma studio
 }
 
 db_seed() {
@@ -143,25 +166,67 @@ status() {
     docker volume ls | grep siraty || echo "No Siraty volumes found"
 }
 
+# Quick setup command
+quick_start() {
+    print_status "Quick start: Setting up development environment..."
+    
+    # Check if .env exists
+    if [ ! -f .env ]; then
+        print_warning "No .env file found. Creating example .env file..."
+        cat > .env << EOF
+# Database
+DATABASE_URL="postgresql://siraty_user:siraty_password@localhost:5432/siraty_dev?schema=public"
+
+# NextAuth.js
+NEXTAUTH_SECRET="dev-secret-key-change-in-production"
+NEXTAUTH_URL="http://localhost:3000"
+
+# LinkedIn OAuth
+AUTH_LINKEDIN_ID="your-linkedin-client-id"
+AUTH_LINKEDIN_SECRET="your-linkedin-client-secret"
+
+# Application
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
+
+# OpenAI (optional)
+OPENAI_API_KEY="your-openai-api-key"
+EOF
+        print_warning "Please update .env with your actual LinkedIn OAuth credentials"
+    fi
+    
+    print_status "Building and starting development environment..."
+    docker-compose build
+    docker-compose up -d
+    print_success "Development environment ready!"
+    print_status "Application: http://localhost:3000"
+    print_status "pgAdmin: http://localhost:5050 (admin@siraty.com / admin)"
+}
+
 # Help function
 show_help() {
     echo "Siraty Docker Management Script"
     echo "Usage: ./docker-scripts.sh [COMMAND]"
     echo
+    echo "Quick Commands:"
+    echo "  quick-start   Quick setup with .env creation and container start"
+    echo
     echo "Development Commands:"
-    echo "  dev:start     Start development environment"
+    echo "  dev:start     Start development environment with logs"
     echo "  dev:stop      Stop development environment"
     echo "  dev:restart   Restart development environment"
     echo "  dev:logs      Show development logs [service]"
     echo "  dev:shell     Open shell in development container"
     echo
     echo "Production Commands:"
-    echo "  prod:start    Start production environment"
+    echo "  prod:start    Start production environment (requires host nginx)"
     echo "  prod:stop     Stop production environment"
     echo "  prod:logs     Show production logs [service]"
     echo
     echo "Database Commands:"
+    echo "  db:push       Push Prisma schema to database (development)"
     echo "  db:migrate    Run database migrations"
+    echo "  db:generate   Generate Prisma client"
+    echo "  db:studio     Open Prisma Studio"
     echo "  db:seed       Seed database with initial data"
     echo "  db:reset      Reset database (WARNING: destructive)"
     echo "  db:backup     Create database backup (production)"
@@ -174,10 +239,16 @@ show_help() {
     echo "  status        Show Docker resources status"
     echo "  cleanup       Clean up Docker resources"
     echo "  help          Show this help message"
+    echo
+    echo "Note: Production environment requires nginx to be configured on the host"
+    echo "      to proxy traffic to localhost:3000"
 }
 
 # Main script logic
 case "${1:-help}" in
+    "quick-start")
+        quick_start
+        ;;
     "dev:start")
         dev_start
         ;;
@@ -202,8 +273,17 @@ case "${1:-help}" in
     "prod:logs")
         prod_logs $2
         ;;
+    "db:push")
+        db_push
+        ;;
     "db:migrate")
         db_migrate
+        ;;
+    "db:generate")
+        db_generate
+        ;;
+    "db:studio")
+        db_studio
         ;;
     "db:seed")
         db_seed

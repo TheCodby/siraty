@@ -40,6 +40,8 @@ services:
       - NEXT_PUBLIC_APP_URL=http://localhost:3000
       - AUTH_LINKEDIN_ID=${AUTH_LINKEDIN_ID}
       - AUTH_LINKEDIN_SECRET=${AUTH_LINKEDIN_SECRET}
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
     ports:
       - "3000:3000"
     volumes:
@@ -47,12 +49,15 @@ services:
       - /app/node_modules
       - /app/.next
       - /app/.git
+      - /app/dist
+      - /app/coverage
+      - ./docker/scripts/dev-start.sh:/usr/local/bin/dev-start.sh:ro
     networks:
       - siraty-network
     depends_on:
       postgres:
         condition: service_healthy
-    command: npm run dev
+    command: ["sh", "/usr/local/bin/dev-start.sh"]
 
   # pgAdmin for database management (optional)
   pgadmin:
