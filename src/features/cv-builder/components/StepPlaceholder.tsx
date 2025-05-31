@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { InfoIcon } from "lucide-react";
+import { useTranslations, useLocale } from "next-intl";
 
 interface StepPlaceholderProps {
   title: string;
@@ -28,6 +29,11 @@ export const StepPlaceholder: React.FC<StepPlaceholderProps> = ({
   onPrevious,
   isLastStep = false,
 }) => {
+  const t = useTranslations("development");
+  const tCommon = useTranslations("common");
+  const locale = useLocale();
+  const isRTL = locale === "ar";
+
   return (
     <Card>
       <CardHeader>
@@ -39,16 +45,19 @@ export const StepPlaceholder: React.FC<StepPlaceholderProps> = ({
         <Alert>
           <InfoIcon className="h-4 w-4" />
           <AlertDescription>
-            <strong>Development in Progress</strong>
+            <strong>{t("inProgress")}</strong>
             <br />
-            This step is currently under development. We&apos;re working hard to
-            bring you the best CV building experience!
+            {t("inProgressDescription")}
           </AlertDescription>
         </Alert>
 
-        <div className="flex justify-between pt-6 border-t">
+        <div
+          className={`flex justify-between pt-6 border-t ${
+            isRTL ? "flex-row-reverse" : "flex-row"
+          }`}
+        >
           <Button type="button" variant="outline" onClick={onPrevious}>
-            Previous
+            {tCommon("previous")}
           </Button>
           <Button
             type="button"

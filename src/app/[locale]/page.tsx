@@ -79,10 +79,10 @@ export default function HomePage() {
   ];
 
   const stats = [
-    { number: "50K+", label: "CVs Created" },
-    { number: "85%", label: "Success Rate" },
-    { number: "200+", label: "Companies" },
-    { number: "4.9★", label: "User Rating" },
+    { number: t("stats.cvsCreated"), label: t("stats.cvsCreatedLabel") },
+    { number: t("stats.successRate"), label: t("stats.successRateLabel") },
+    { number: t("stats.companies"), label: t("stats.companiesLabel") },
+    { number: t("stats.rating"), label: t("stats.ratingLabel") },
   ];
 
   return (
@@ -96,7 +96,7 @@ export default function HomePage() {
             <div className="inline-flex items-center space-x-2 rtl:space-x-reverse bg-gradient-to-r from-blue-100 to-purple-100 rounded-full px-4 py-2 mb-8">
               <SparklesIcon className="h-5 w-5 text-blue-600" />
               <span className="text-blue-700 font-medium text-sm">
-                AI-Powered Career Coach
+                {t("heroTag")}
               </span>
             </div>
 
@@ -110,7 +110,7 @@ export default function HomePage() {
               {t("subtitle")}
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link
                 href={`/${locale}/create-cv`}
                 className="group relative bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-blue-700 hover:via-purple-700 hover:to-indigo-700 transition-all duration-300 flex items-center gap-3 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
@@ -163,14 +163,13 @@ export default function HomePage() {
               </span>
             </div>
             <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
-              Powerful Tools for Your
+              {t("features.title")}
               <span className="block bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                Career Success
+                {t("features.titleHighlight")}
               </span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Everything you need to create, improve, and optimize your resume
-              with AI assistance
+              {t("features.subtitle")}
             </p>
           </div>
 
@@ -221,13 +220,13 @@ export default function HomePage() {
             <div className="inline-flex items-center space-x-2 rtl:space-x-reverse bg-gradient-to-r from-green-100 to-emerald-100 rounded-full px-4 py-2 mb-4">
               <CheckCircleIcon className="h-4 w-4 text-green-600" />
               <span className="text-green-700 font-medium text-sm">
-                Success Stories
+                {t("testimonials.tag")}
               </span>
             </div>
             <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
-              Loved by Job Seekers
+              {t("testimonials.title")}
               <span className="block bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-                Worldwide
+                {t("testimonials.titleHighlight")}
               </span>
             </h2>
           </div>
@@ -275,19 +274,18 @@ export default function HomePage() {
           <div className="relative bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 rounded-3xl p-12 text-white overflow-hidden">
             <div className="relative z-10">
               <h2 className="text-4xl sm:text-5xl font-bold mb-6">
-                Ready to Build Your
-                <span className="block">Perfect CV?</span>
+                {t("cta.title")}
+                <span className="block">{t("cta.titleHighlight")}</span>
               </h2>
               <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-                Join thousands of job seekers who have improved their careers
-                with our AI-powered tools
+                {t("cta.subtitle")}
               </p>
               <Link
                 href={`/${locale}/create-cv`}
                 className="group inline-flex items-center space-x-3 rtl:space-x-reverse bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
               >
                 <SparklesIcon className="h-5 w-5" />
-                <span>Start Building Now</span>
+                <span>{t("cta.button")}</span>
                 <ArrowRightIcon className="h-5 w-5 group-hover:translate-x-1 transition-transform rtl:rotate-180" />
               </Link>
             </div>
@@ -303,7 +301,7 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-900 text-white">
+      <footer className="py-12 px-4 sm:px-6 lg:px-8 bg-gray-900 text-white">
         <div className="max-w-7xl mx-auto text-center">
           <div className="flex items-center justify-center mb-6">
             <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
@@ -313,11 +311,9 @@ export default function HomePage() {
               سيرتي
             </span>
           </div>
-          <p className="text-gray-400 mb-4">
-            Building better careers with AI-powered tools
-          </p>
+          <p className="text-gray-400 mb-4">{t("footer.tagline")}</p>
           <p className="text-gray-500 text-sm">
-            © {new Date().getFullYear()} Siraty. All rights reserved.
+            {t("footer.copyright", { year: new Date().getFullYear() })}
           </p>
         </div>
       </footer>

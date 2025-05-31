@@ -8,6 +8,7 @@ import {
   Code,
   Download,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Navbar from "@/components/layout/Navbar";
 import {
   StepIndicator,
@@ -19,51 +20,56 @@ import { EducationForm } from "@/features/cv-builder/components/EducationForm";
 import { SkillsProjectsForm } from "@/features/cv-builder/components/SkillsProjectsForm";
 import { ReviewForm } from "@/features/cv-builder/components/ReviewForm";
 import { CVPreview } from "@/features/cv-builder/components/CVPreview";
+import { SaveStatusIndicator } from "@/features/cv-builder/components/SaveStatusIndicator";
 import { useCVBuilder } from "@/features/cv-builder/hooks/useCVBuilder";
 
-const steps: Step[] = [
-  {
-    id: 1,
-    name: "Personal Information",
-    description: "Basic contact details and summary",
-    icon: User,
-    status: "current",
-  },
-  {
-    id: 2,
-    name: "Work Experience",
-    description: "Professional experience and achievements",
-    icon: Briefcase,
-    status: "upcoming",
-  },
-  {
-    id: 3,
-    name: "Education",
-    description: "Academic background and qualifications",
-    icon: GraduationCap,
-    status: "upcoming",
-  },
-  {
-    id: 4,
-    name: "Skills & Projects",
-    description: "Technical skills and notable projects",
-    icon: Code,
-    status: "upcoming",
-  },
-  {
-    id: 5,
-    name: "Review & Download",
-    description: "Final review and export options",
-    icon: Download,
-    status: "upcoming",
-  },
-];
-
 export default function CreateCVPage() {
+  const t = useTranslations("cvBuilder");
+  const tSteps = useTranslations("cvBuilder.steps");
+
+  const steps: Step[] = [
+    {
+      id: 1,
+      name: tSteps("personal"),
+      description: t("stepDescriptions.personal"),
+      icon: User,
+      status: "current",
+    },
+    {
+      id: 2,
+      name: tSteps("experience"),
+      description: t("stepDescriptions.experience"),
+      icon: Briefcase,
+      status: "upcoming",
+    },
+    {
+      id: 3,
+      name: tSteps("education"),
+      description: t("stepDescriptions.education"),
+      icon: GraduationCap,
+      status: "upcoming",
+    },
+    {
+      id: 4,
+      name: tSteps("skillsProjects"),
+      description: t("stepDescriptions.skillsProjects"),
+      icon: Code,
+      status: "upcoming",
+    },
+    {
+      id: 5,
+      name: tSteps("review"),
+      description: t("stepDescriptions.review"),
+      icon: Download,
+      status: "upcoming",
+    },
+  ];
+
   const {
     currentStep,
     cvData,
     completionPercentage,
+    isDataLoaded,
     updatePersonalInfo,
     updateWorkExperience,
     updateEducation,
@@ -72,6 +78,7 @@ export default function CreateCVPage() {
     nextStep,
     previousStep,
     goToStep,
+    clearSavedData,
   } = useCVBuilder();
 
   const renderCurrentStep = () => {
@@ -140,25 +147,33 @@ export default function CreateCVPage() {
           <div className="inline-flex items-center space-x-2 rtl:space-x-reverse bg-gradient-to-r from-blue-100 to-purple-100 rounded-full px-4 py-2 mb-6">
             <FileText className="h-5 w-5 text-blue-600" />
             <span className="text-blue-700 font-medium text-sm">
-              CV Builder
+              {t("pageTitle")}
             </span>
           </div>
 
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-            Create Your
+            {t("heroTitle")}
             <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
-              Professional CV
+              {t("heroTitleHighlight")}
             </span>
           </h1>
 
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Build a stunning, ATS-optimized resume in minutes with our
-            AI-powered guidance
+            {t("heroSubtitle")}
           </p>
         </div>
 
         {/* Progress Steps */}
         <StepIndicator steps={steps} currentStep={currentStep} />
+
+        {/* Save Status Indicator */}
+        <div className="flex justify-center mb-6">
+          <SaveStatusIndicator
+            isDataLoaded={isDataLoaded}
+            lastUpdated={cvData.updatedAt}
+            onClearData={clearSavedData}
+          />
+        </div>
 
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

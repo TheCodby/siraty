@@ -1,6 +1,12 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import {
+  getLocalStorageItem,
+  setLocalStorageItem,
+  STORAGE_KEYS,
+  clearCVBuilderData,
+} from "@/lib/localStorage";
 import type {
   CVData,
   PersonalInfo,
@@ -16,6 +22,7 @@ interface CVBuilderState {
   cvData: CVData;
   isLoading: boolean;
   errors: Record<string, string>;
+  isDataLoaded: boolean; // Track if we've loaded data from localStorage
 }
 
 const initialPersonalInfo: PersonalInfo = {
@@ -47,7 +54,62 @@ export const useCVBuilder = () => {
     cvData: initialCVData,
     isLoading: false,
     errors: {},
+    isDataLoaded: false,
   });
+
+  // Load data from localStorage on component mount
+  useEffect(() => {
+    const loadSavedData = () => {
+      const savedCVData = getLocalStorageItem<CVData | null>(
+        STORAGE_KEYS.CV_BUILDER_DATA,
+        null
+      );
+      const savedStep = getLocalStorageItem<number>(
+        STORAGE_KEYS.CV_BUILDER_STEP,
+        1
+      );
+
+      if (savedCVData) {
+        setState((prev) => ({
+          ...prev,
+          cvData: {
+            ...savedCVData,
+            // Ensure we have a valid ID
+            id: savedCVData.id || Date.now().toString(),
+          },
+          currentStep: savedStep,
+          isDataLoaded: true,
+        }));
+      } else {
+        // Initialize with a new ID if no saved data
+        setState((prev) => ({
+          ...prev,
+          cvData: {
+            ...initialCVData,
+            id: Date.now().toString(),
+            createdAt: new Date().toISOString(),
+          },
+          isDataLoaded: true,
+        }));
+      }
+    };
+
+    loadSavedData();
+  }, []);
+
+  // Save CV data to localStorage whenever it changes
+  useEffect(() => {
+    if (state.isDataLoaded && state.cvData.id) {
+      setLocalStorageItem(STORAGE_KEYS.CV_BUILDER_DATA, state.cvData);
+    }
+  }, [state.cvData, state.isDataLoaded]);
+
+  // Save current step to localStorage whenever it changes
+  useEffect(() => {
+    if (state.isDataLoaded) {
+      setLocalStorageItem(STORAGE_KEYS.CV_BUILDER_STEP, state.currentStep);
+    }
+  }, [state.currentStep, state.isDataLoaded]);
 
   const updatePersonalInfo = useCallback((personalInfo: PersonalInfo) => {
     setState((prev) => ({
@@ -200,12 +262,37 @@ export const useCVBuilder = () => {
   }, []);
 
   const reset = useCallback(() => {
+    // Clear localStorage data
+    clearCVBuilderData();
+
     setState({
       currentStep: 1,
-      cvData: { ...initialCVData, id: Date.now().toString() },
+      cvData: {
+        ...initialCVData,
+        id: Date.now().toString(),
+        createdAt: new Date().toISOString(),
+      },
       isLoading: false,
       errors: {},
+      isDataLoaded: true,
     });
+  }, []);
+
+  const clearSavedData = useCallback(() => {
+    const success = clearCVBuilderData();
+    if (success) {
+      setState((prev) => ({
+        ...prev,
+        cvData: {
+          ...initialCVData,
+          id: Date.now().toString(),
+          createdAt: new Date().toISOString(),
+        },
+        currentStep: 1,
+        errors: {},
+      }));
+    }
+    return success;
   }, []);
 
   return {
@@ -215,6 +302,7 @@ export const useCVBuilder = () => {
     isLoading: state.isLoading,
     errors: state.errors,
     completionPercentage: calculateCompletionPercentage(),
+    isDataLoaded: state.isDataLoaded,
 
     // Actions
     updatePersonalInfo,
@@ -230,5 +318,6 @@ export const useCVBuilder = () => {
     setError,
     clearError,
     reset,
+    clearSavedData,
   };
 };

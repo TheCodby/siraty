@@ -3,6 +3,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import { Providers } from "@/app/providers";
 import "../globals.css";
 
 export const metadata: Metadata = {
@@ -176,45 +177,47 @@ export default async function LocaleLayout({
         `}
         suppressHydrationWarning
       >
-        <NextIntlClientProvider
-          messages={messages}
-          locale={locale}
-          timeZone="UTC"
-        >
-          {/* Skip to main content link for accessibility */}
-          <a
-            href="#main-content"
-            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-50 bg-blue-600 text-white px-4 py-2 rounded-md font-medium"
+        <Providers>
+          <NextIntlClientProvider
+            messages={messages}
+            locale={locale}
+            timeZone="UTC"
           >
-            Skip to main content
-          </a>
-
-          {/* Main application container */}
-          <div className="min-h-screen flex flex-col">
-            {/* Main content area */}
-            <main id="main-content" className="flex-1">
-              {children}
-            </main>
-
-            {/* Global loading overlay - can be controlled via state management */}
-            <div
-              id="global-loading"
-              className="hidden fixed inset-0 bg-white/80 backdrop-blur-sm z-50 flex items-center justify-center"
+            {/* Skip to main content link for accessibility */}
+            <a
+              href="#main-content"
+              className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-50 bg-blue-600 text-white px-4 py-2 rounded-md font-medium"
             >
-              <div className="flex flex-col items-center space-y-4">
-                <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-                <p className="text-gray-600 font-medium">Loading...</p>
+              Skip to main content
+            </a>
+
+            {/* Main application container */}
+            <div className="min-h-screen flex flex-col">
+              {/* Main content area */}
+              <main id="main-content" className="flex-1">
+                {children}
+              </main>
+
+              {/* Global loading overlay - can be controlled via state management */}
+              <div
+                id="global-loading"
+                className="hidden fixed inset-0 bg-white/80 backdrop-blur-sm z-50 flex items-center justify-center"
+              >
+                <div className="flex flex-col items-center space-y-4">
+                  <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                  <p className="text-gray-600 font-medium">Loading...</p>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Toast container for notifications */}
-          <div
-            id="toast-container"
-            className="fixed top-4 right-4 z-50 space-y-2"
-            style={{ direction: "ltr" }} // Always LTR for toasts
-          ></div>
-        </NextIntlClientProvider>
+            {/* Toast container for notifications */}
+            <div
+              id="toast-container"
+              className="fixed top-4 right-4 z-50 space-y-2"
+              style={{ direction: "ltr" }} // Always LTR for toasts
+            ></div>
+          </NextIntlClientProvider>
+        </Providers>
 
         {/* Development helpers - only in development */}
         {process.env.NODE_ENV === "development" && (

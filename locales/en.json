@@ -10,7 +10,11 @@
   "home": {
     "title": "سيرتي - Your AI Career Coach",
     "subtitle": "Create, improve, and optimize your resume with AI assistance",
+    "heroTag": "AI-Powered Career Coach",
     "features": {
+      "title": "Powerful Tools for Your",
+      "titleHighlight": "Career Success",
+      "subtitle": "Everything you need to create, improve, and optimize your resume with AI assistance",
       "createCV": {
         "title": "Create Professional CV",
         "description": "Build your resume step-by-step with our intuitive form"
@@ -28,11 +32,55 @@
         "description": "Get your ATS score and detailed improvement suggestions"
       }
     },
+    "stats": {
+      "cvsCreated": "50K+",
+      "cvsCreatedLabel": "CVs Created",
+      "successRate": "85%",
+      "successRateLabel": "Success Rate",
+      "companies": "200+",
+      "companiesLabel": "Companies",
+      "rating": "4.9★",
+      "ratingLabel": "User Rating"
+    },
+    "testimonials": {
+      "tag": "Success Stories",
+      "title": "Loved by Job Seekers",
+      "titleHighlight": "Worldwide"
+    },
+    "cta": {
+      "title": "Ready to Build Your",
+      "titleHighlight": "Perfect CV?",
+      "subtitle": "Join thousands of job seekers who have improved their careers with our AI-powered tools",
+      "button": "Start Building Now"
+    },
+    "footer": {
+      "tagline": "Building better careers with AI-powered tools",
+      "copyright": "© {year} Siraty. All rights reserved."
+    },
     "getStarted": "Get Started",
     "learnMore": "Learn More"
   },
   "cvBuilder": {
     "title": "Create Your CV",
+    "description": "Tell us about yourself and add your contact details",
+    "pageTitle": "CV Builder",
+    "heroTitle": "Create Your",
+    "heroTitleHighlight": "Professional CV",
+    "heroSubtitle": "Build a stunning, ATS-optimized resume in minutes with our AI-powered guidance",
+    "stepDescriptions": {
+      "personal": "Basic contact details and summary",
+      "experience": "Professional experience and achievements",
+      "education": "Academic background and qualifications",
+      "skillsProjects": "Technical skills and notable projects",
+      "review": "Final review and export options"
+    },
+    "stepIndicator": {
+      "step": "Step",
+      "of": "of",
+      "completed": "Completed",
+      "current": "Current step",
+      "upcoming": "Upcoming step"
+    },
     "steps": {
       "personal": "Personal Information",
       "experience": "Work Experience",
@@ -40,6 +88,7 @@
       "skills": "Skills",
       "projects": "Projects",
       "certifications": "Certifications",
+      "skillsProjects": "Skills & Projects",
       "review": "Review & Export"
     },
     "personalInfo": {
@@ -49,7 +98,19 @@
       "location": "Location",
       "linkedIn": "LinkedIn Profile",
       "portfolio": "Portfolio Website",
-      "summary": "Professional Summary"
+      "summary": "Professional Summary",
+      "placeholders": {
+        "fullName": "e.g. John Doe",
+        "email": "e.g. john.doe@example.com",
+        "phone": "e.g. +1 (555) 123-4567",
+        "location": "e.g. New York, NY",
+        "linkedIn": "e.g. https://linkedin.com/in/johndoe",
+        "portfolio": "e.g. https://johndoe.com",
+        "summary": "Write a compelling summary that highlights your key skills, experience, and career goals..."
+      },
+      "hints": {
+        "summary": "This is your elevator pitch. Focus on your strengths and what makes you unique."
+      }
     },
     "workExperience": {
       "jobTitle": "Job Title",
@@ -110,6 +171,15 @@
       "credentialId": "Credential ID",
       "link": "Verification Link",
       "addCertification": "Add Certification"
+    },
+    "persistence": {
+      "dataSaved": "Data saved automatically",
+      "dataLoaded": "Previous data loaded",
+      "clearData": "Clear Saved Data",
+      "clearDataConfirm": "Are you sure you want to clear all saved data? This action cannot be undone.",
+      "dataCleared": "Saved data cleared successfully",
+      "autoSave": "Auto-save enabled",
+      "lastSaved": "Last saved: {time}"
     }
   },
   "aiChat": {
@@ -168,5 +238,63 @@
     "success": "Success",
     "required": "This field is required",
     "optional": "Optional"
+  },
+  "development": {
+    "inProgress": "Development in Progress",
+    "inProgressDescription": "This step is currently under development. We're working hard to bring you the best CV building experience!",
+    "placeholder": {
+      "title": "Coming Soon",
+      "description": "This feature is being developed"
+    },
+    "testTemplates": {
+      "title": "CV Template Generation Test",
+      "description": "Test the CV template generation functionality with sample data",
+      "templateSelection": "Template Selection",
+      "selectTemplate": "Select a template to test the generation process",
+      "generateButton": "Generate CV",
+      "generating": "Generating...",
+      "generationError": "Generation Error",
+      "filesGenerated": "Files Generated:",
+      "download": "Download"
+    }
+  },
+  "linkedIn": {
+    "connect": "Connect with LinkedIn",
+    "connecting": "Connecting...",
+    "connected": "Connected to LinkedIn",
+    "connectedAs": "Connected as",
+    "disconnect": "Disconnect",
+    "import": "Import LinkedIn Profile",
+    "importing": "Importing...",
+    "importSuccess": "Profile imported successfully",
+    "notConnected": "Not connected to LinkedIn",
+    "checkingConnection": "Checking connection...",
+    "sync": "Sync",
+    "syncAgain": "Sync again",
+    "syncComplete": "Sync completed",
+    "syncError": "Sync failed",
+    "retry": "Retry",
+    "limitations": {
+      "title": "LinkedIn API Limitations",
+      "description": "With basic LinkedIn OAuth, we can only access profile name and picture. Work experience, education, and skills require special LinkedIn Partner status.",
+      "available": "Available with Basic OAuth:",
+      "requires": "Requires LinkedIn Partner Status:",
+      "availableItems": [
+        "First & Last Name",
+        "Profile Picture",
+        "LinkedIn User ID"
+      ],
+      "requiresItems": [
+        "Work Experience",
+        "Education History",
+        "Skills & Endorsements"
+      ]
+    },
+    "errors": {
+      "authFailed": "Failed to authenticate with LinkedIn",
+      "noSession": "No LinkedIn session found",
+      "importFailed": "Failed to import profile data",
+      "networkError": "Network error occurred"
+    }
   }
 }
