@@ -14,6 +14,7 @@
     "db:seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@auth/prisma-adapter": "^2.9.1",
     "@heroicons/react": "^2.2.0",
     "@prisma/client": "^6.8.2",
     "@prisma/extension-accelerate": "^2.0.1",
@@ -29,6 +30,7 @@
     "docx-templates": "^4.14.1",
     "lucide-react": "^0.511.0",
     "next": "15.3.2",
+    "next-auth": "^5.0.0-beta.28",
     "next-intl": "^4.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
