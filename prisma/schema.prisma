@@ -1,0 +1,339 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ================================
+// CV/RESUME DATA
+// ================================
+
+model CV {
+  id        String   @id @default(cuid())
+  title     String   @default("My Resume")
+  language  String   @default("en") // "en" or "ar"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Personal Information (embedded)
+  fullName   String
+  email      String
+  phone      String
+  location   String
+  linkedIn   String?
+  portfolio  String?
+  summary    String  @db.Text
+
+  // Relations
+  workExperience WorkExperience[]
+  education      Education[]
+  skills         Skill[]
+  projects       Project[]
+  certifications Certification[]
+  languages      Language[]
+  atsScores      ATSScore[]
+  chatSessions   ChatSession[]
+  jobMatches     JobMatch[]
+
+  @@map("cvs")
+}
+
+model WorkExperience {
+  id             String   @id @default(cuid())
+  cvId           String
+  jobTitle       String
+  company        String
+  location       String
+  startDate      DateTime
+  endDate        DateTime?
+  isCurrentRole  Boolean  @default(false)
+  description    String   @db.Text
+  achievements   String[] // Array of strings
+  technologies   String[] // Array of strings
+  sortOrder      Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  cv CV @relation(fields: [cvId], references: [id], onDelete: Cascade)
+
+  @@map("work_experiences")
+}
+
+model Education {
+  id               String   @id @default(cuid())
+  cvId             String
+  degree           String
+  institution      String
+  location         String
+  graduationDate   DateTime
+  gpa              String?
+  honors           String[] // Array of strings
+  relevantCourses  String[] // Array of strings
+  sortOrder        Int      @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  cv CV @relation(fields: [cvId], references: [id], onDelete: Cascade)
+
+  @@map("education")
+}
+
+model Skill {
+  id        String     @id @default(cuid())
+  cvId      String
+  name      String
+  category  SkillCategory
+  level     SkillLevel
+  sortOrder Int        @default(0)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  cv CV @relation(fields: [cvId], references: [id], onDelete: Cascade)
+
+  @@map("skills")
+}
+
+model Project {
+  id           String    @id @default(cuid())
+  cvId         String
+  name         String
+  description  String    @db.Text
+  technologies String[]  // Array of strings
+  startDate    DateTime
+  endDate      DateTime?
+  link         String?
+  repository   String?
+  sortOrder    Int       @default(0)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  cv CV @relation(fields: [cvId], references: [id], onDelete: Cascade)
+
+  @@map("projects")
+}
+
+model Certification {
+  id           String    @id @default(cuid())
+  cvId         String
+  name         String
+  issuer       String
+  date         DateTime
+  expiryDate   DateTime?
+  credentialId String?
+  link         String?
+  sortOrder    Int       @default(0)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  cv CV @relation(fields: [cvId], references: [id], onDelete: Cascade)
+
+  @@map("certifications")
+}
+
+model Language {
+  id        String        @id @default(cuid())
+  cvId      String
+  name      String
+  level     LanguageLevel
+  sortOrder Int           @default(0)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  cv CV @relation(fields: [cvId], references: [id], onDelete: Cascade)
+
+  @@map("languages")
+}
+
+// ================================
+// JOB DESCRIPTIONS & MATCHING
+// ================================
+
+model JobDescription {
+  id              String   @id @default(cuid())
+  title           String
+  company         String
+  location        String
+  description     String   @db.Text
+  requirements    String[] // Array of strings
+  responsibilities String[] // Array of strings
+  skills          String[] // Array of strings
+  experience      String
+  salary          String?
+  benefits        String[] // Array of strings
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  jobMatches JobMatch[]
+
+  @@map("job_descriptions")
+}
+
+model JobMatch {
+  id    String @id @default(cuid())
+  cvId  String
+  jobId String
+
+  // Match Analysis Results
+  overallMatch       Float // 0-100
+  skillsMatch        Json  // { matched: string[], missing: string[], percentage: number }
+  experienceMatch    Json  // { relevant: boolean, yearsMatch: boolean, percentage: number }
+  educationMatch     Json  // { relevant: boolean, percentage: number }
+  recommendations    String[] // Array of strings
+  improvementAreas   Json  // Array of improvement areas with priorities
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  cv  CV             @relation(fields: [cvId], references: [id], onDelete: Cascade)
+  job JobDescription @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@unique([cvId, jobId])
+  @@map("job_matches")
+}
+
+// ================================
+// ATS SCORING
+// ================================
+
+model ATSScore {
+  id   String @id @default(cuid())
+  cvId String
+
+  // Overall Score
+  overallScore       Float // 0-100
+  estimatedPassRate  Float // 0-100
+
+  // Category Scores (stored as JSON for flexibility)
+  formattingScore    Json // { score: number, feedback: string[] }
+  keywordsScore      Json // { score: number, matched: string[], missing: string[], feedback: string[] }
+  experienceScore    Json // { score: number, feedback: string[] }
+  educationScore     Json // { score: number, feedback: string[] }
+  skillsScore        Json // { score: number, feedback: string[] }
+
+  // General recommendations
+  recommendations    String[] // Array of strings
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  cv CV @relation(fields: [cvId], references: [id], onDelete: Cascade)
+
+  @@map("ats_scores")
+}
+
+// ================================
+// AI CHAT SYSTEM
+// ================================
+
+model ChatSession {
+  id       String           @id @default(cuid())
+  cvId     String?          // Optional: if chat is about a specific CV
+  title    String           @default("New Chat")
+  purpose  ChatPurpose      @default(GENERAL)
+  language String           @default("en") // "en" or "ar"
+  status   ChatStatus       @default(ACTIVE)
+  metadata Json?            // Additional context data
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  cv       CV?           @relation(fields: [cvId], references: [id], onDelete: Cascade)
+  messages ChatMessage[]
+
+  @@map("chat_sessions")
+}
+
+model ChatMessage {
+  id            String      @id @default(cuid())
+  sessionId     String
+  role          MessageRole
+  content       String      @db.Text
+  contentType   String      @default("text") // "text", "json", "markdown"
+  metadata      Json?       // Type, related section, etc.
+  tokensUsed    Int?        // For cost tracking
+  modelUsed     String?     // Which AI model was used
+
+  createdAt DateTime @default(now())
+
+  // Relations
+  session ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@map("chat_messages")
+}
+
+// ================================
+// TEMPLATES
+// ================================
+
+model CVTemplate {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  category    String   // "modern", "classic", "creative", etc.
+  language    String   @default("en")
+  templateData Json    // Template structure and styling
+  preview     String?  // Preview image URL
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("cv_templates")
+}
+
+// ================================
+// ENUMS
+// ================================
+
+enum SkillCategory {
+  TECHNICAL
+  SOFT
+  LANGUAGE
+}
+
+enum SkillLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  EXPERT
+}
+
+enum LanguageLevel {
+  BASIC
+  CONVERSATIONAL
+  PROFESSIONAL
+  NATIVE
+}
+
+enum ChatPurpose {
+  GENERAL
+  CV_IMPROVEMENT
+  JD_MATCHING
+  ATS_OPTIMIZATION
+  CAREER_ADVICE
+}
+
+enum ChatStatus {
+  ACTIVE
+  ARCHIVED
+  COMPLETED
+}
+
+enum MessageRole {
+  USER
+  ASSISTANT
+  SYSTEM
+}
