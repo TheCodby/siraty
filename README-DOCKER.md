@@ -7,6 +7,7 @@ This guide explains how to run the Siraty application using Docker with both dev
 - Docker Engine 20.10+
 - Docker Compose 2.0+
 - Git
+- 4GB+ available RAM (recommended for LibreOffice)
 
 ## 🚀 Quick Start
 
@@ -330,3 +331,111 @@ If you encounter issues:
 2. Review logs with `./docker-scripts.sh dev:logs`
 3. Ensure all environment variables are set
 4. Verify Docker and Docker Compose versions
+
+# 📋 Features
+
+- **Complete Development Environment**: Next.js 15, PostgreSQL, pgAdmin
+- **Production Ready**: Optimized builds with security best practices
+- **Document Processing**: LibreOffice and Pandoc for CV/PDF generation
+- **Internationalization**: Arabic/English support with proper fonts
+- **One-Command Setup**: Automated scripts for easy management
+- **Data Persistence**: PostgreSQL data survives container restarts
+
+## 📄 Document Processing Capabilities
+
+The Docker container includes:
+
+### LibreOffice
+
+- **Version**: Latest stable from Alpine packages
+- **Purpose**: Word document processing, template filling
+- **Features**: Headless mode for server operations
+- **Formats**: DOCX, DOC, ODT support
+
+### Pandoc
+
+- **Version**: Latest stable from Alpine packages
+- **Purpose**: Document format conversion
+- **Features**: Markdown to PDF, HTML to PDF
+- **Formats**: 40+ input/output formats
+
+### Fonts Included
+
+- **DejaVu**: Standard web-safe fonts
+- **Liberation**: Microsoft Office compatible fonts
+- **Noto**: Google's universal font family
+- **Noto Arabic**: Arabic script support
+- **Noto CJK**: Chinese, Japanese, Korean support
+- **MS Core Fonts**: Times New Roman, Arial, etc.
+
+## 🛠 Usage
+
+### Interactive Management
+
+```bash
+./docker-scripts.sh
+```
+
+### Command Line Usage
+
+```bash
+# Build with document processing tools
+./docker-scripts.sh build
+
+# Start application
+./docker-scripts.sh start
+
+# Verify LibreOffice and Pandoc
+./docker-scripts.sh verify-tools
+
+# Access container shell
+./docker-scripts.sh shell
+
+# View logs
+./docker-scripts.sh logs
+
+# Stop application
+./docker-scripts.sh stop
+```
+
+## 🔧 Document Processing API
+
+The application provides CV generation endpoints:
+
+### Generate CV
+
+```bash
+POST /api/generate-cv
+Content-Type: application/json
+
+{
+  "cvData": { /* CV data object */ },
+  "options": {
+    "templateId": "modern-template",
+    "format": "pdf|docx|both",
+    "language": "en|ar"
+  }
+}
+```
+
+### Response Formats
+
+- **PDF Only**: Direct file download
+- **DOCX Only**: Direct file download
+- **Both**: JSON with base64 encoded files
+
+## 📦 Container Structure
+
+```
+/app/
+├── src/                    # Application source
+├── templates/              # CV templates
+├── public/                 # Static assets
+├── .next/                  # Next.js build
+└── node_modules/           # Dependencies
+
+System Tools:
+├── /usr/bin/libreoffice    # Document processing
+├── /usr/bin/pandoc         # Format conversion
+└── /usr/share/fonts/       # Font libraries
+```

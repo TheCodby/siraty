@@ -65,6 +65,7 @@ export class DocumentProcessor {
         cmdDelimiter: ["+++", "+++"],
         literalXmlDelimiter: "{{{",
         processLineBreaks: true,
+        processLineBreaksAsNewText: true,
         noSandbox: false, // Security: keep sandbox enabled
         additionalJsContext: {
           // Add utility functions for templates
@@ -170,7 +171,7 @@ export class DocumentProcessor {
       LOCATION: this.sanitizeText(personalInfo.location || ""),
       LINKEDIN: this.sanitizeText(personalInfo.linkedIn || ""),
       PORTFOLIO: this.sanitizeText(personalInfo.portfolio || ""),
-      SUMMARY: this.sanitizeText(personalInfo.summary || ""),
+      SUMMARY: this.sanitizeSummary(personalInfo.summary || ""),
 
       // Contact info combined (for minimal templates)
       CONTACT_INFO: [
@@ -192,7 +193,7 @@ export class DocumentProcessor {
           : language === "ar"
           ? "حتى الآن"
           : "Present",
-        DESCRIPTION: this.sanitizeText(exp.description),
+        DESCRIPTION: this.sanitizeSummary(exp.description),
         ACHIEVEMENTS: this.formatAchievements(exp.achievements || [], language),
         TECHNOLOGIES: this.formatList(exp.technologies || []),
         DURATION: this.calculateDuration(exp.startDate, exp.endDate, language),
@@ -221,7 +222,7 @@ export class DocumentProcessor {
       // Projects
       PROJECTS: projects.map((project) => ({
         PROJECT_NAME: this.sanitizeText(project.name),
-        PROJECT_DESCRIPTION: this.sanitizeText(project.description),
+        PROJECT_DESCRIPTION: this.sanitizeSummary(project.description),
         TECHNOLOGIES: this.formatList(project.technologies),
         START_DATE: this.formatDate(project.startDate, language),
         END_DATE: project.endDate
@@ -253,11 +254,33 @@ export class DocumentProcessor {
   /**
    * Utility functions for data formatting
    */
-  private sanitizeText(text: string): string {
-    return text
-      .replace(/[<>]/g, "") // Remove potential XML characters
-      .replace(/\s+/g, " ") // Normalize whitespace
-      .trim();
+  private sanitizeText(
+    text: string,
+    preserveLineBreaks: boolean = false
+  ): string {
+    const cleaned = text.replace(/[<>]/g, ""); // Remove potential XML characters
+
+    if (preserveLineBreaks) {
+      // For summary and description fields, preserve line breaks but normalize other whitespace
+      return cleaned
+        .replace(/[ \t]+/g, " ") // Normalize spaces and tabs but keep newlines
+        .replace(/\n\s*\n/g, "\n\n") // Normalize multiple newlines to double newlines
+        .trim();
+    } else {
+      // For other fields, normalize all whitespace
+      return cleaned
+        .replace(/\s+/g, " ") // Normalize all whitespace to single spaces
+        .trim();
+    }
+  }
+
+  /**
+   * Sanitize summary text while preserving user's line breaks
+   * Used for summary, work experience descriptions, and project descriptions
+   * where users often format their content with intentional line breaks
+   */
+  private sanitizeSummary(text: string): string {
+    return this.sanitizeText(text, true);
   }
 
   private formatDate(dateString: string, language: "en" | "ar"): string {
@@ -397,7 +420,7 @@ export class DocumentProcessor {
               : "Present"
           } (${duration})`,
           exp.location,
-          exp.description,
+          this.sanitizeSummary(exp.description),
           exp.achievements?.length
             ? this.formatAchievements(exp.achievements, language)
             : "",
@@ -464,7 +487,7 @@ export class DocumentProcessor {
       .map((project) =>
         [
           `${project.name} | ${this.formatDate(project.startDate, language)}`,
-          project.description,
+          this.sanitizeSummary(project.description),
           `Technologies: ${this.formatList(project.technologies)}`,
           project.link ? `Demo: ${project.link}` : "",
           project.repository ? `Repository: ${project.repository}` : "",

@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# Siraty Docker Management Script
-# This script provides easy commands for managing the Siraty application with Docker
+# Siraty Docker Management Scripts
+# This script helps manage the Docker containers for the Siraty application
+# Now includes LibreOffice and Pandoc for document processing
 
 set -e
 
@@ -12,301 +13,287 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+echo -e "${BLUE}🚀 Siraty Docker Management${NC}"
+echo "============================="
+
 # Function to print colored output
 print_status() {
-    echo -e "${BLUE}[INFO]${NC} $1"
-}
-
-print_success() {
-    echo -e "${GREEN}[SUCCESS]${NC} $1"
+    echo -e "${GREEN}✅ $1${NC}"
 }
 
 print_warning() {
-    echo -e "${YELLOW}[WARNING]${NC} $1"
+    echo -e "${YELLOW}⚠️  $1${NC}"
 }
 
 print_error() {
-    echo -e "${RED}[ERROR]${NC} $1"
+    echo -e "${RED}❌ $1${NC}"
 }
 
-# Development commands
-dev_start() {
-    print_status "Starting development environment..."
-    docker-compose up -d
-    print_success "Development environment started!"
-    print_status "Application: http://localhost:3000"
-    print_status "pgAdmin: http://localhost:5050 (admin@siraty.com / admin)"
-    print_status "Watching logs..."
-    docker-compose logs -f app
+print_info() {
+    echo -e "${BLUE}ℹ️  $1${NC}"
 }
 
-dev_stop() {
-    print_status "Stopping development environment..."
-    docker-compose down
-    print_success "Development environment stopped!"
-}
-
-dev_restart() {
-    print_status "Restarting development environment..."
-    docker-compose restart app
-    print_success "Development environment restarted!"
-}
-
-dev_logs() {
-    print_status "Showing development logs..."
-    docker-compose logs -f ${1:-app}
-}
-
-dev_shell() {
-    print_status "Opening shell in development container..."
-    docker-compose exec app sh
-}
-
-# Production commands
-prod_start() {
-    print_status "Starting production environment..."
-    print_warning "Note: Nginx should be configured on the host to proxy to localhost:3000"
-    docker-compose -f docker-compose.prod.yml up -d
-    print_success "Production environment started!"
-    print_status "Application running on: http://localhost:3000 (internal)"
-    print_warning "Configure your host nginx to proxy external traffic to localhost:3000"
-}
-
-prod_stop() {
-    print_status "Stopping production environment..."
-    docker-compose -f docker-compose.prod.yml down
-    print_success "Production environment stopped!"
-}
-
-prod_logs() {
-    print_status "Showing production logs..."
-    docker-compose -f docker-compose.prod.yml logs -f ${1:-app}
-}
-
-# Database commands
-db_push() {
-    print_status "Pushing Prisma schema to database..."
-    docker-compose exec app npx prisma db push
-    print_success "Database schema pushed!"
-}
-
-db_migrate() {
-    print_status "Running database migrations..."
-    docker-compose exec app npx prisma migrate deploy
-    print_success "Database migrations completed!"
-}
-
-db_generate() {
-    print_status "Generating Prisma client..."
-    docker-compose exec app npx prisma generate
-    print_success "Prisma client generated!"
-}
-
-db_studio() {
-    print_status "Opening Prisma Studio..."
-    print_warning "Prisma Studio will open at http://localhost:5555"
-    docker-compose exec app npx prisma studio
-}
-
-db_seed() {
-    print_status "Seeding database..."
-    docker-compose exec app npx prisma db seed
-    print_success "Database seeded!"
-}
-
-db_reset() {
-    print_warning "This will reset the database and all data will be lost!"
-    read -p "Are you sure? (y/N): " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        print_status "Resetting database..."
-        docker-compose exec app npx prisma migrate reset --force
-        print_success "Database reset completed!"
-    else
-        print_status "Database reset cancelled."
+# Function to check if Docker is running
+check_docker() {
+    if ! docker info > /dev/null 2>&1; then
+        print_error "Docker is not running. Please start Docker first."
+        exit 1
     fi
+    print_status "Docker is running"
 }
 
-db_backup() {
-    print_status "Creating database backup..."
-    docker-compose -f docker-compose.prod.yml run --rm backup
-    print_success "Database backup completed!"
+# Function to verify document processing tools
+verify_document_tools() {
+    local environment=${1:-development}
+    print_info "Verifying document processing tools in $environment container..."
+    
+    local compose_file=""
+    local service_name="siraty"
+    
+    case $environment in
+        "production"|"prod")
+            compose_file="-f docker-compose.prod.yml"
+            ;;
+        "development"|"dev"|*)
+            compose_file=""
+            ;;
+    esac
+    
+    # Check if container is running
+    if ! docker-compose $compose_file ps | grep -q "$service_name.*Up"; then
+        print_warning "Container not running. Starting it first..."
+        docker-compose $compose_file up -d $service_name
+        sleep 10
+    fi
+    
+    echo "Checking LibreOffice..."
+    docker-compose $compose_file exec $service_name libreoffice --version || print_error "LibreOffice not found"
+    
+    echo "Checking Pandoc..."
+    docker-compose $compose_file exec $service_name pandoc --version || print_error "Pandoc not found"
+    
+    echo "Checking fonts..."
+    docker-compose $compose_file exec $service_name fc-list | grep -i "dejavu\|noto\|liberation" | head -5
+    
+    print_status "Document processing tools verification complete"
 }
 
-# Build commands
+# Main menu
+show_menu() {
+    echo ""
+    echo "Available commands:"
+    echo "1. build-dev      - Build development images"
+    echo "2. build-prod     - Build production images"
+    echo "3. start-dev      - Start development environment"
+    echo "4. start-prod     - Start production environment"
+    echo "5. stop-dev       - Stop development environment"
+    echo "6. stop-prod      - Stop production environment"
+    echo "7. logs-dev       - Show development logs"
+    echo "8. logs-prod      - Show production logs"
+    echo "9. verify-dev     - Verify tools in development"
+    echo "10. verify-prod   - Verify tools in production"
+    echo "11. shell-dev     - Access development shell"
+    echo "12. shell-prod    - Access production shell"
+    echo "13. clean         - Clean up Docker resources"
+    echo "14. status        - Show containers status"
+    echo "15. backup        - Run database backup"
+    echo "0. exit           - Exit this script"
+    echo ""
+}
+
+# Build functions
 build_dev() {
-    print_status "Building development image..."
-    docker-compose build app
-    print_success "Development image built!"
+    print_info "Building development environment with document processing tools..."
+    check_docker
+    docker-compose build siraty
+    print_status "Development build completed"
 }
 
 build_prod() {
-    print_status "Building production image..."
-    docker-compose -f docker-compose.prod.yml build app
-    print_success "Production image built!"
+    print_info "Building production environment with document processing tools..."
+    check_docker
+    docker-compose -f docker-compose.prod.yml build siraty
+    print_status "Production build completed"
 }
 
-# Cleanup commands
-cleanup() {
-    print_status "Cleaning up Docker resources..."
-    docker system prune -f
-    docker volume prune -f
-    print_success "Docker cleanup completed!"
-}
-
-# Status commands
-status() {
-    print_status "Docker containers status:"
-    docker-compose ps
-    echo
-    print_status "Docker images:"
-    docker images | grep siraty || echo "No Siraty images found"
-    echo
-    print_status "Docker volumes:"
-    docker volume ls | grep siraty || echo "No Siraty volumes found"
-}
-
-# Quick setup command
-quick_start() {
-    print_status "Quick start: Setting up development environment..."
+# Start functions
+start_dev() {
+    print_info "Starting development environment..."
+    check_docker
     
-    # Check if .env exists
-    if [ ! -f .env ]; then
-        print_warning "No .env file found. Creating example .env file..."
-        cat > .env << EOF
-# Database
-DATABASE_URL="postgresql://siraty_user:siraty_password@localhost:5432/siraty_dev?schema=public"
+    # Check if .env.local exists
+    if [ ! -f .env.local ]; then
+        print_warning ".env.local file not found"
+        print_info "Creating a template .env.local file..."
+        cat > .env.local << EOF
+# NextAuth Configuration
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=dev-secret-key-change-in-production
 
-# NextAuth.js
-NEXTAUTH_SECRET="dev-secret-key-change-in-production"
-NEXTAUTH_URL="http://localhost:3000"
-
-# LinkedIn OAuth
-AUTH_LINKEDIN_ID="your-linkedin-client-id"
-AUTH_LINKEDIN_SECRET="your-linkedin-client-secret"
-
-# Application
-NEXT_PUBLIC_APP_URL="http://localhost:3000"
+# LinkedIn OAuth (optional)
+LINKEDIN_CLIENT_ID=your_linkedin_client_id
+LINKEDIN_CLIENT_SECRET=your_linkedin_client_secret
 
 # OpenAI (optional)
-OPENAI_API_KEY="your-openai-api-key"
+OPENAI_API_KEY=your_openai_api_key
+
 EOF
-        print_warning "Please update .env with your actual LinkedIn OAuth credentials"
+        print_warning "Please update .env.local with your actual values"
     fi
     
-    print_status "Building and starting development environment..."
-    docker-compose build
     docker-compose up -d
-    print_success "Development environment ready!"
-    print_status "Application: http://localhost:3000"
-    print_status "pgAdmin: http://localhost:5050 (admin@siraty.com / admin)"
+    
+    print_status "Development environment started successfully"
+    print_info "🌐 Application: http://localhost:3000"
+    print_info "📊 Database: PostgreSQL on localhost:5432"
+    print_info "🗃️  pgAdmin: http://localhost:5050 (admin@siraty.com / admin)"
+    print_info "📧 Mailhog: http://localhost:8025"
+    print_info "📄 Document processing: LibreOffice + Pandoc enabled"
 }
 
-# Help function
-show_help() {
-    echo "Siraty Docker Management Script"
-    echo "Usage: ./docker-scripts.sh [COMMAND]"
-    echo
-    echo "Quick Commands:"
-    echo "  quick-start   Quick setup with .env creation and container start"
-    echo
-    echo "Development Commands:"
-    echo "  dev:start     Start development environment with logs"
-    echo "  dev:stop      Stop development environment"
-    echo "  dev:restart   Restart development environment"
-    echo "  dev:logs      Show development logs [service]"
-    echo "  dev:shell     Open shell in development container"
-    echo
-    echo "Production Commands:"
-    echo "  prod:start    Start production environment (requires host nginx)"
-    echo "  prod:stop     Stop production environment"
-    echo "  prod:logs     Show production logs [service]"
-    echo
-    echo "Database Commands:"
-    echo "  db:push       Push Prisma schema to database (development)"
-    echo "  db:migrate    Run database migrations"
-    echo "  db:generate   Generate Prisma client"
-    echo "  db:studio     Open Prisma Studio"
-    echo "  db:seed       Seed database with initial data"
-    echo "  db:reset      Reset database (WARNING: destructive)"
-    echo "  db:backup     Create database backup (production)"
-    echo
-    echo "Build Commands:"
-    echo "  build:dev     Build development image"
-    echo "  build:prod    Build production image"
-    echo
-    echo "Utility Commands:"
-    echo "  status        Show Docker resources status"
-    echo "  cleanup       Clean up Docker resources"
-    echo "  help          Show this help message"
-    echo
-    echo "Note: Production environment requires nginx to be configured on the host"
-    echo "      to proxy traffic to localhost:3000"
+start_prod() {
+    print_info "Starting production environment..."
+    check_docker
+    
+    # Check if .env.production exists
+    if [ ! -f .env.production ]; then
+        print_error ".env.production file not found"
+        print_info "Please create .env.production with production values"
+        return 1
+    fi
+    
+    docker-compose -f docker-compose.prod.yml up -d
+    
+    print_status "Production environment started successfully"
+    print_info "🌐 Application: http://localhost:3000"
+    print_info "📊 Database: PostgreSQL (internal network)"
+    print_info "📄 Document processing: LibreOffice + Pandoc enabled"
+    print_warning "⚠️  Configure your reverse proxy to point to localhost:3000"
+    print_warning "⚠️  Ensure proper SSL certificates are configured"
+}
+
+# Stop functions
+stop_dev() {
+    print_info "Stopping development environment..."
+    docker-compose down
+    print_status "Development environment stopped"
+}
+
+stop_prod() {
+    print_info "Stopping production environment..."
+    docker-compose -f docker-compose.prod.yml down
+    print_status "Production environment stopped"
+}
+
+# Logs functions
+logs_dev() {
+    print_info "Showing development logs (press Ctrl+C to exit)..."
+    docker-compose logs -f siraty
+}
+
+logs_prod() {
+    print_info "Showing production logs (press Ctrl+C to exit)..."
+    docker-compose -f docker-compose.prod.yml logs -f siraty
+}
+
+# Shell access functions
+shell_dev() {
+    print_info "Accessing development container shell..."
+    print_info "Available tools: node, npm, libreoffice, pandoc, psql, git, vim"
+    docker-compose exec siraty /bin/bash
+}
+
+shell_prod() {
+    print_info "Accessing production container shell..."
+    print_info "Available tools: node, npm, libreoffice, pandoc"
+    docker-compose -f docker-compose.prod.yml exec siraty /bin/bash
+}
+
+# Backup function
+backup_db() {
+    print_info "Running database backup..."
+    docker-compose -f docker-compose.prod.yml run --rm backup
+    print_status "Database backup completed"
+}
+
+# Clean function
+clean_docker() {
+    print_warning "This will remove all stopped containers, unused networks, and dangling images"
+    read -p "Are you sure? (y/n): " confirm
+    
+    if [[ $confirm =~ ^[Yy]$ ]]; then
+        docker system prune -f
+        print_status "Docker cleanup completed"
+    else
+        print_info "Cleanup cancelled"
+    fi
+}
+
+# Status function
+show_status() {
+    print_info "Development containers:"
+    docker-compose ps
+    
+    echo ""
+    print_info "Production containers:"
+    docker-compose -f docker-compose.prod.yml ps
+    
+    echo ""
+    print_info "Docker system info:"
+    docker system df
 }
 
 # Main script logic
-case "${1:-help}" in
-    "quick-start")
-        quick_start
-        ;;
-    "dev:start")
-        dev_start
-        ;;
-    "dev:stop")
-        dev_stop
-        ;;
-    "dev:restart")
-        dev_restart
-        ;;
-    "dev:logs")
-        dev_logs $2
-        ;;
-    "dev:shell")
-        dev_shell
-        ;;
-    "prod:start")
-        prod_start
-        ;;
-    "prod:stop")
-        prod_stop
-        ;;
-    "prod:logs")
-        prod_logs $2
-        ;;
-    "db:push")
-        db_push
-        ;;
-    "db:migrate")
-        db_migrate
-        ;;
-    "db:generate")
-        db_generate
-        ;;
-    "db:studio")
-        db_studio
-        ;;
-    "db:seed")
-        db_seed
-        ;;
-    "db:reset")
-        db_reset
-        ;;
-    "db:backup")
-        db_backup
-        ;;
-    "build:dev")
-        build_dev
-        ;;
-    "build:prod")
-        build_prod
-        ;;
-    "status")
-        status
-        ;;
-    "cleanup")
-        cleanup
-        ;;
-    "help"|*)
-        show_help
-        ;;
-esac 
+if [ $# -eq 0 ]; then
+    # Interactive mode
+    while true; do
+        show_menu
+        read -p "Choose an option: " choice
+        
+        case $choice in
+            1) build_dev ;;
+            2) build_prod ;;
+            3) start_dev ;;
+            4) start_prod ;;
+            5) stop_dev ;;
+            6) stop_prod ;;
+            7) logs_dev ;;
+            8) logs_prod ;;
+            9) verify_document_tools "development" ;;
+            10) verify_document_tools "production" ;;
+            11) shell_dev ;;
+            12) shell_prod ;;
+            13) clean_docker ;;
+            14) show_status ;;
+            15) backup_db ;;
+            0) print_status "Goodbye!"; exit 0 ;;
+            *) print_error "Invalid option. Please try again." ;;
+        esac
+        
+        echo ""
+        read -p "Press Enter to continue..."
+    done
+else
+    # Command line mode
+    case $1 in
+        build-dev) build_dev ;;
+        build-prod) build_prod ;;
+        start-dev) start_dev ;;
+        start-prod) start_prod ;;
+        stop-dev) stop_dev ;;
+        stop-prod) stop_prod ;;
+        logs-dev) logs_dev ;;
+        logs-prod) logs_prod ;;
+        verify-dev) verify_document_tools "development" ;;
+        verify-prod) verify_document_tools "production" ;;
+        shell-dev) shell_dev ;;
+        shell-prod) shell_prod ;;
+        backup) backup_db ;;
+        clean) clean_docker ;;
+        status) show_status ;;
+        *) 
+            echo "Usage: $0 [build-dev|build-prod|start-dev|start-prod|stop-dev|stop-prod|logs-dev|logs-prod|verify-dev|verify-prod|shell-dev|shell-prod|backup|clean|status]"
+            exit 1
+            ;;
+    esac
+fi 

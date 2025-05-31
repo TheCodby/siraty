@@ -1,0 +1,121 @@
+# Production Dockerfile for Siraty
+# Optimized for production deployment with minimal attack surface
+
+FROM node:20-alpine AS base
+
+# Install system dependencies for document processing
+RUN apk add --no-cache libc6-compat
+
+WORKDIR /app
+
+# Install dependencies only when needed
+FROM base AS deps
+
+# Install build dependencies
+RUN apk add --no-cache \
+    python3 \
+    make \
+    g++ \
+    && rm -rf /var/cache/apk/*
+
+# Install dependencies based on the preferred package manager
+COPY package.json package-lock.json* ./
+RUN \
+  if [ -f package-lock.json ]; then npm ci --only=production --frozen-lockfile; \
+  else echo "Lockfile not found." && exit 1; \
+  fi
+
+# Rebuild the source code only when needed
+FROM base AS builder
+
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+
+# Generate Prisma client
+RUN npx prisma generate
+
+# Disable telemetry during build
+ENV NEXT_TELEMETRY_DISABLED 1
+
+# Build application
+RUN npm run build
+
+# Production runtime image
+FROM node:20-alpine AS runner
+
+WORKDIR /app
+
+# Production environment variables
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
+
+# Install LibreOffice, Pandoc, and required system dependencies
+RUN apk add --no-cache \
+    # Document processing tools
+    libreoffice \
+    pandoc \
+    openjdk11-jre \
+    # Font support
+    fontconfig \
+    ttf-dejavu \
+    ttf-liberation \
+    msttcorefonts-installer \
+    # System utilities
+    curl \
+    bash \
+    dumb-init \
+    # Security tools
+    ca-certificates \
+    && update-ms-fonts \
+    && fc-cache -f \
+    && rm -rf /var/cache/apk/*
+
+# Install additional fonts for international support
+RUN apk add --no-cache \
+    font-noto \
+    font-noto-arabic \
+    font-noto-cjk \
+    && fc-cache -f \
+    && rm -rf /var/cache/apk/*
+
+# Create non-root user for security
+RUN addgroup --system --gid 1001 nodejs \
+    && adduser --system --uid 1001 nextjs
+
+# Copy public files
+COPY --from=builder /app/public ./public
+
+# Set the correct permission for prerender cache
+RUN mkdir .next && chown nextjs:nodejs .next
+
+# Copy built application
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+# Copy Prisma schema and generated client
+COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma ./node_modules/.prisma
+
+# Verify document processing tools installation
+RUN libreoffice --version && pandoc --version
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD curl -f http://localhost:3000/api/health || exit 1
+
+# Switch to non-root user
+USER nextjs
+
+# Expose port
+EXPOSE 3000
+
+# Set hostname binding
+ENV PORT 3000
+ENV HOSTNAME "0.0.0.0"
+
+# Use dumb-init for proper signal handling
+ENTRYPOINT ["dumb-init", "--"]
+
+# Start the application
+CMD ["node", "server.js"] 
