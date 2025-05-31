@@ -109,8 +109,8 @@ export default async function LocaleLayout({
         />
 
         {/* Theme color for mobile browsers */}
-        <meta name="theme-color" content="#2563eb" />
-        <meta name="msapplication-TileColor" content="#2563eb" />
+        <meta name="theme-color" content="#3b82f6" />
+        <meta name="msapplication-TileColor" content="#3b82f6" />
 
         {/* Apple touch icon */}
         <link
@@ -132,6 +132,7 @@ export default async function LocaleLayout({
           sizes="16x16"
           href="/favicon-16x16.png"
         />
+        <link rel="icon" href="/favicon.png" type="image/png" />
 
         {/* Manifest for PWA */}
         <link rel="manifest" href="/site.webmanifest" />
@@ -169,11 +170,14 @@ export default async function LocaleLayout({
       <body
         className={`
           min-h-full 
-          bg-gradient-to-br from-blue-50 via-white to-indigo-50
-          text-gray-900
+          bg-gradient-to-br from-blue-50 via-white to-indigo-50 
+          dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-900
+          text-gray-900 dark:text-gray-100
           antialiased
           ${fontClass}
-          selection:bg-blue-200 selection:text-blue-900
+          selection:bg-blue-200 selection:text-blue-900 
+          dark:selection:bg-blue-800 dark:selection:text-blue-100
+          transition-colors duration-300
         `}
         suppressHydrationWarning
       >

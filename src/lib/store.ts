@@ -25,9 +25,6 @@ interface AppState {
   // Chat Data
   chatMessages: ChatMessage[];
 
-  // UI State
-  theme: "light" | "dark";
-
   // Actions
   setCurrentCV: (cv: CVData | null) => void;
   setSavedCVs: (cvs: CVData[]) => void;
@@ -40,8 +37,6 @@ interface AppState {
 
   addChatMessage: (message: ChatMessage) => void;
   clearChatMessages: () => void;
-
-  setTheme: (theme: "light" | "dark") => void;
 }
 
 export const useAppStore = create<AppState>()(
@@ -54,7 +49,6 @@ export const useAppStore = create<AppState>()(
       currentATSScore: null,
       currentMatchAnalysis: null,
       chatMessages: [],
-      theme: "light",
 
       // CV Actions
       setCurrentCV: (cv) => set({ currentCV: cv }),
@@ -84,15 +78,11 @@ export const useAppStore = create<AppState>()(
           chatMessages: [...state.chatMessages, message],
         })),
       clearChatMessages: () => set({ chatMessages: [] }),
-
-      // Theme Actions
-      setTheme: (theme) => set({ theme }),
     }),
     {
       name: "siraty-storage",
       partialize: (state) => ({
         savedCVs: state.savedCVs,
-        theme: state.theme,
         chatMessages: state.chatMessages,
       }),
     }

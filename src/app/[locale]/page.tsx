@@ -1,5 +1,6 @@
 import { useTranslations } from "next-intl";
 import Link from "next/link";
+import Image from "next/image";
 import { useLocale } from "next-intl";
 import Navbar from "@/components/layout/Navbar";
 import {
@@ -81,35 +82,8 @@ export default function HomePage() {
     },
   ];
 
-  const testimonials = [
-    {
-      name: "Sarah Ahmed",
-      role: "Software Engineer",
-      content:
-        "سيرتي helped me create a professional CV that got me interviews at top tech companies!",
-      rating: 5,
-      avatar: "👩‍💻",
-    },
-    {
-      name: "Mohammed Ali",
-      role: "Marketing Manager",
-      content:
-        "The AI suggestions were incredibly helpful. I landed my dream job within 2 weeks!",
-      rating: 5,
-      avatar: "👨‍💼",
-    },
-    {
-      name: "Fatima Hassan",
-      role: "Data Scientist",
-      content:
-        "Amazing tool! The ATS optimization feature made all the difference.",
-      rating: 5,
-      avatar: "👩‍🔬",
-    },
-  ];
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-300">
       <Navbar />
 
       {/* Hero Section */}
@@ -129,7 +103,7 @@ export default function HomePage() {
               </span>
             </h1>
 
-            <p className="text-xl sm:text-2xl text-gray-600 mb-8 max-w-4xl mx-auto leading-relaxed">
+            <p className="text-xl sm:text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-4xl mx-auto leading-relaxed">
               {t("subtitle")}
             </p>
 
@@ -146,7 +120,7 @@ export default function HomePage() {
 
               <Link
                 href={`/${locale}/learn-more`}
-                className="group border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-xl font-semibold hover:bg-gray-50 hover:border-gray-400 transition-all duration-300 flex items-center gap-2"
+                className="group border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 px-8 py-4 rounded-xl font-semibold hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-gray-400 dark:hover:border-gray-500 transition-all duration-300 flex items-center gap-2"
               >
                 <DocumentTextIcon className="h-5 w-5" />
                 <span>{t("learnMore")}</span>
@@ -158,7 +132,7 @@ export default function HomePage() {
               {benefits.map((benefit, index) => (
                 <div
                   key={benefit.title}
-                  className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                  className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-6 border border-white/20 dark:border-gray-700/50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
                   style={{ animationDelay: `${index * 150}ms` }}
                 >
                   <div
@@ -167,11 +141,11 @@ export default function HomePage() {
                     <benefit.icon className={`h-6 w-6 ${benefit.textColor}`} />
                   </div>
 
-                  <h3 className="text-lg font-bold text-gray-900 mb-2 text-center">
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2 text-center">
                     {benefit.title}
                   </h3>
 
-                  <p className="text-sm text-gray-600 text-center leading-relaxed">
+                  <p className="text-sm text-gray-600 dark:text-gray-300 text-center leading-relaxed">
                     {benefit.description}
                   </p>
                 </div>
@@ -189,7 +163,7 @@ export default function HomePage() {
       </section>
 
       {/* Benefits Section - Moved here for immediate visibility */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white to-gray-50 border-t border-gray-100">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white to-gray-50 dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 border-t border-gray-200 dark:border-gray-700 transition-colors duration-300">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <div className="inline-flex items-center space-x-2 rtl:space-x-reverse bg-gradient-to-r from-emerald-100 to-teal-100 rounded-full px-4 py-2 mb-4">
@@ -198,13 +172,13 @@ export default function HomePage() {
                 {t("benefits.tag")}
               </span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
               {t("benefits.title")}
               <span className="block bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                 {t("benefits.titleHighlight")}
               </span>
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               {t("benefits.subtitle")}
             </p>
           </div>
@@ -217,7 +191,7 @@ export default function HomePage() {
                 className="relative group"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <div className="relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-200 hover:border-gray-300 transform hover:-translate-y-3 h-full">
+                <div className="relative bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transform hover:-translate-y-3 h-full">
                   {/* Colored top border */}
                   <div
                     className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${benefit.color} rounded-t-2xl`}
@@ -229,11 +203,11 @@ export default function HomePage() {
                     <benefit.icon className={`h-7 w-7 ${benefit.textColor}`} />
                   </div>
 
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">
                     {benefit.title}
                   </h3>
 
-                  <p className="text-gray-600 leading-relaxed mb-4 text-sm">
+                  <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4 text-sm">
                     {benefit.description}
                   </p>
 
@@ -258,41 +232,41 @@ export default function HomePage() {
           </div>
 
           {/* Quick features list - Simplified for top placement */}
-          <div className="bg-gradient-to-r from-gray-50 to-white rounded-2xl p-6 border border-gray-200">
+          <div className="bg-gradient-to-r from-gray-50 to-white dark:bg-gradient-to-r dark:from-gray-800 dark:to-gray-700 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 transition-colors duration-300">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               <div className="flex items-center space-x-2 rtl:space-x-reverse">
                 <CheckCircleIcon className="h-4 w-4 text-green-600 flex-shrink-0" />
-                <span className="text-gray-700 text-sm font-medium">
+                <span className="text-gray-700 dark:text-gray-300 text-sm font-medium">
                   {t("benefits.features.noRegistration")}
                 </span>
               </div>
               <div className="flex items-center space-x-2 rtl:space-x-reverse">
                 <CheckCircleIcon className="h-4 w-4 text-green-600 flex-shrink-0" />
-                <span className="text-gray-700 text-sm font-medium">
+                <span className="text-gray-700 dark:text-gray-300 text-sm font-medium">
                   {t("benefits.features.privacy")}
                 </span>
               </div>
               <div className="flex items-center space-x-2 rtl:space-x-reverse">
                 <CheckCircleIcon className="h-4 w-4 text-green-600 flex-shrink-0" />
-                <span className="text-gray-700 text-sm font-medium">
+                <span className="text-gray-700 dark:text-gray-300 text-sm font-medium">
                   {t("benefits.features.templates")}
                 </span>
               </div>
               <div className="flex items-center space-x-2 rtl:space-x-reverse">
                 <CheckCircleIcon className="h-4 w-4 text-green-600 flex-shrink-0" />
-                <span className="text-gray-700 text-sm font-medium">
+                <span className="text-gray-700 dark:text-gray-300 text-sm font-medium">
                   {t("benefits.features.autoSave")}
                 </span>
               </div>
               <div className="flex items-center space-x-2 rtl:space-x-reverse">
                 <CheckCircleIcon className="h-4 w-4 text-green-600 flex-shrink-0" />
-                <span className="text-gray-700 text-sm font-medium">
+                <span className="text-gray-700 dark:text-gray-300 text-sm font-medium">
                   {t("benefits.features.bilingual")}
                 </span>
               </div>
               <div className="flex items-center space-x-2 rtl:space-x-reverse">
                 <CheckCircleIcon className="h-4 w-4 text-green-600 flex-shrink-0" />
-                <span className="text-gray-700 text-sm font-medium">
+                <span className="text-gray-700 dark:text-gray-300 text-sm font-medium">
                   {t("benefits.features.community")}
                 </span>
               </div>
@@ -311,13 +285,13 @@ export default function HomePage() {
                 Features
               </span>
             </div>
-            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-6">
               {t("features.title")}
               <span className="block bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
                 {t("features.titleHighlight")}
               </span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               {t("features.subtitle")}
             </p>
           </div>
@@ -327,7 +301,7 @@ export default function HomePage() {
               <Link
                 key={feature.name}
                 href={feature.href}
-                className="group relative bg-white rounded-2xl p-8 shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-gray-200 transform hover:-translate-y-2"
+                className="group relative bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 dark:border-gray-700 hover:border-gray-200 dark:hover:border-gray-600 transform hover:-translate-y-2"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div
@@ -341,11 +315,11 @@ export default function HomePage() {
                     <feature.icon className="h-7 w-7 text-white" />
                   </div>
 
-                  <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-indigo-600 transition-colors">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3 group-hover:text-indigo-600 transition-colors">
                     {feature.name}
                   </h3>
 
-                  <p className="text-gray-600 leading-relaxed mb-6">
+                  <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
                     {feature.description}
                   </p>
 
@@ -357,61 +331,6 @@ export default function HomePage() {
 
                 <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-br from-transparent to-gray-100 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 to-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center space-x-2 rtl:space-x-reverse bg-gradient-to-r from-green-100 to-emerald-100 rounded-full px-4 py-2 mb-4">
-              <CheckCircleIcon className="h-4 w-4 text-green-600" />
-              <span className="text-green-700 font-medium text-sm">
-                {t("testimonials.tag")}
-              </span>
-            </div>
-            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
-              {t("testimonials.title")}
-              <span className="block bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-                {t("testimonials.titleHighlight")}
-              </span>
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <div
-                key={testimonial.name}
-                className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100"
-                style={{ animationDelay: `${index * 200}ms` }}
-              >
-                <div className="flex items-center space-x-1 rtl:space-x-reverse mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <StarIcon
-                      key={i}
-                      className="h-5 w-5 text-yellow-400 fill-current"
-                    />
-                  ))}
-                </div>
-
-                <p className="text-gray-700 mb-6 leading-relaxed">
-                  &quot;{testimonial.content}&quot;
-                </p>
-
-                <div className="flex items-center space-x-3 rtl:space-x-reverse">
-                  <div className="text-2xl">{testimonial.avatar}</div>
-                  <div>
-                    <div className="font-semibold text-gray-900">
-                      {testimonial.name}
-                    </div>
-                    <div className="text-sm text-gray-600">
-                      {testimonial.role}
-                    </div>
-                  </div>
-                </div>
-              </div>
             ))}
           </div>
         </div>
@@ -450,16 +369,18 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-4 sm:px-6 lg:px-8 bg-gray-900 text-white">
+      <footer className="py-12 px-4 sm:px-6 lg:px-8 bg-gray-900 dark:bg-gray-950 text-white transition-colors duration-300">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-6">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                <span className="text-white font-bold text-xl">س</span>
+              <div className="relative w-16 h-10">
+                <Image
+                  src="/siraty-logo.png"
+                  alt="سيرتي - Siraty"
+                  fill
+                  className="object-contain rounded-lg"
+                />
               </div>
-              <span className="ml-3 text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                سيرتي
-              </span>
             </div>
             <p className="text-gray-400 mb-6">{t("footer.tagline")}</p>
 
