@@ -249,7 +249,7 @@ export default function HomePage() {
                 </div>
 
                 <p className="text-gray-700 mb-6 leading-relaxed">
-                  "{testimonial.content}"
+                  &quot;{testimonial.content}&quot;
                 </p>
 
                 <div className="flex items-center space-x-3 rtl:space-x-reverse">
