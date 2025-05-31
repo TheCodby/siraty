@@ -117,11 +117,11 @@ export const useCVStore = create<CVBuilderState>()(
 
       // Step navigation actions
       setCurrentStep: (step: number) =>
-        set({ currentStep: Math.max(1, Math.min(step, 5)) }),
+        set({ currentStep: Math.max(1, Math.min(step, 6)) }),
 
       nextStep: () =>
         set((state) => ({
-          currentStep: Math.min(state.currentStep + 1, 5),
+          currentStep: Math.min(state.currentStep + 1, 6),
         })),
 
       previousStep: () =>
@@ -130,7 +130,7 @@ export const useCVStore = create<CVBuilderState>()(
         })),
 
       goToStep: (step: number) =>
-        set({ currentStep: Math.max(1, Math.min(step, 5)) }),
+        set({ currentStep: Math.max(1, Math.min(step, 6)) }),
 
       // CV data update actions
       updatePersonalInfo: (personalInfo: PersonalInfo) =>

@@ -57,6 +57,35 @@
       "tagline": "Building better careers with AI-powered tools",
       "copyright": "© {year} Siraty. All rights reserved."
     },
+    "benefits": {
+      "tag": "Why Choose سيرتي",
+      "title": "Built for Modern",
+      "titleHighlight": "Job Seekers",
+      "subtitle": "Experience the power of a truly free, professional, and intelligent CV builder",
+      "openSource": {
+        "title": "100% Open Source",
+        "description": "Completely free and transparent. View, modify, and contribute to the codebase on GitHub."
+      },
+      "fileFormats": {
+        "title": "Multiple File Formats",
+        "description": "Generate your CV as an editable Word document (.docx) or professional PDF file."
+      },
+      "atsFriendly": {
+        "title": "ATS-Friendly Design",
+        "description": "All templates are optimized for Applicant Tracking Systems to pass initial screenings."
+      },
+      "availableNow": "Available Now",
+      "everythingTitle": "Everything You Need, Nothing You Don't",
+      "everythingSubtitle": "Built with developers, by developers - for everyone",
+      "features": {
+        "noRegistration": "No registration required",
+        "privacy": "Privacy-first approach",
+        "templates": "Professional templates",
+        "autoSave": "Real-time auto-save",
+        "bilingual": "Bilingual support (AR/EN)",
+        "community": "Community-driven development"
+      }
+    },
     "getStarted": "Get Started",
     "learnMore": "Learn More"
   },
@@ -71,6 +100,8 @@
       "personal": "Basic contact details and summary",
       "experience": "Professional experience and achievements",
       "education": "Academic background and qualifications",
+      "skills": "Technical and soft skills with proficiency levels",
+      "projects": "Notable projects and portfolios",
       "skillsProjects": "Technical skills and notable projects",
       "review": "Final review and export options"
     },
@@ -137,9 +168,17 @@
       "editEducation": "Edit Education"
     },
     "skills": {
-      "name": "Skill Name",
-      "category": "Category",
-      "level": "Proficiency Level",
+      "description": "Add your technical and soft skills with proficiency levels to help employers understand your capabilities.",
+      "fields": {
+        "name": "Skill Name",
+        "category": "Category",
+        "level": "Proficiency Level"
+      },
+      "placeholders": {
+        "name": "e.g. JavaScript",
+        "category": "Select category",
+        "level": "Select level"
+      },
       "categories": {
         "technical": "Technical",
         "soft": "Soft Skills",
@@ -151,17 +190,47 @@
         "advanced": "Advanced",
         "expert": "Expert"
       },
-      "addSkill": "Add Skill"
+      "skillNumber": "Skill #{number}",
+      "addFirst": "Add Your First Skill",
+      "addAnother": "Add Another Skill",
+      "empty": {
+        "title": "No skills added yet",
+        "description": "Start by adding your technical skills, soft skills, and languages to showcase your capabilities to potential employers.",
+        "technologies": "No technologies added yet"
+      }
     },
     "projects": {
-      "name": "Project Name",
-      "description": "Description",
-      "technologies": "Technologies",
-      "startDate": "Start Date",
-      "endDate": "End Date",
-      "link": "Project Link",
-      "repository": "Repository",
-      "addProject": "Add Project"
+      "description": "Showcase your notable projects to demonstrate your practical experience and technical abilities.",
+      "fields": {
+        "name": "Project Name",
+        "description": "Description",
+        "technologies": "Technologies Used",
+        "duration": "Duration",
+        "demoUrl": "Demo URL",
+        "repoUrl": "Repository URL"
+      },
+      "placeholders": {
+        "name": "e.g. E-commerce Platform",
+        "description": "Describe what you built and your role in the project...",
+        "technology": "e.g. React",
+        "duration": "e.g. 3 months",
+        "demoUrl": "https://example.com",
+        "repoUrl": "https://github.com/username/project"
+      },
+      "hints": {
+        "description": "Focus on the problem you solved, technologies used, and the impact of your work."
+      },
+      "projectNumber": "Project #{number}",
+      "hasDemo": "Demo",
+      "hasRepo": "Repo",
+      "addFirst": "Add Your First Project",
+      "addAnother": "Add Another Project",
+      "addTech": "Add",
+      "empty": {
+        "title": "No projects added yet",
+        "description": "Add your notable projects to show employers your practical experience and what you can build.",
+        "technologies": "Click 'Add' to include technologies used in this project"
+      }
     },
     "certifications": {
       "name": "Certification Name",

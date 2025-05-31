@@ -10,6 +10,9 @@ import {
   ArrowRightIcon,
   CheckCircleIcon,
   StarIcon,
+  CodeBracketIcon,
+  DocumentIcon,
+  ShieldCheckIcon,
 } from "@heroicons/react/24/outline";
 
 export default function HomePage() {
@@ -51,6 +54,33 @@ export default function HomePage() {
     },
   ];
 
+  const benefits = [
+    {
+      title: t("benefits.openSource.title"),
+      description: t("benefits.openSource.description"),
+      icon: CodeBracketIcon,
+      color: "from-green-500 to-emerald-500",
+      bgColor: "bg-green-50",
+      textColor: "text-green-700",
+    },
+    {
+      title: t("benefits.fileFormats.title"),
+      description: t("benefits.fileFormats.description"),
+      icon: DocumentIcon,
+      color: "from-blue-500 to-indigo-500",
+      bgColor: "bg-blue-50",
+      textColor: "text-blue-700",
+    },
+    {
+      title: t("benefits.atsFriendly.title"),
+      description: t("benefits.atsFriendly.description"),
+      icon: ShieldCheckIcon,
+      color: "from-purple-500 to-pink-500",
+      bgColor: "bg-purple-50",
+      textColor: "text-purple-700",
+    },
+  ];
+
   const testimonials = [
     {
       name: "Sarah Ahmed",
@@ -78,13 +108,6 @@ export default function HomePage() {
     },
   ];
 
-  const stats = [
-    { number: t("stats.cvsCreated"), label: t("stats.cvsCreatedLabel") },
-    { number: t("stats.successRate"), label: t("stats.successRateLabel") },
-    { number: t("stats.companies"), label: t("stats.companiesLabel") },
-    { number: t("stats.rating"), label: t("stats.ratingLabel") },
-  ];
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
       <Navbar />
@@ -110,7 +133,7 @@ export default function HomePage() {
               {t("subtitle")}
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
               <Link
                 href={`/${locale}/create-cv`}
                 className="group relative bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-blue-700 hover:via-purple-700 hover:to-indigo-700 transition-all duration-300 flex items-center gap-3 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
@@ -130,14 +153,27 @@ export default function HomePage() {
               </Link>
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto">
-              {stats.map((stat) => (
-                <div key={stat.label} className="text-center">
-                  <div className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">
-                    {stat.number}
+            {/* Key Benefits - Inline in hero */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              {benefits.map((benefit, index) => (
+                <div
+                  key={benefit.title}
+                  className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                  style={{ animationDelay: `${index * 150}ms` }}
+                >
+                  <div
+                    className={`${benefit.bgColor} rounded-xl p-3 w-fit mb-4 mx-auto`}
+                  >
+                    <benefit.icon className={`h-6 w-6 ${benefit.textColor}`} />
                   </div>
-                  <div className="text-sm text-gray-600">{stat.label}</div>
+
+                  <h3 className="text-lg font-bold text-gray-900 mb-2 text-center">
+                    {benefit.title}
+                  </h3>
+
+                  <p className="text-sm text-gray-600 text-center leading-relaxed">
+                    {benefit.description}
+                  </p>
                 </div>
               ))}
             </div>
@@ -149,6 +185,119 @@ export default function HomePage() {
           <div className="absolute -top-40 -right-32 w-96 h-96 bg-gradient-to-br from-blue-300 to-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-40 animate-blob"></div>
           <div className="absolute -bottom-40 -left-32 w-96 h-96 bg-gradient-to-br from-purple-300 to-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-40 animate-blob animation-delay-2000"></div>
           <div className="absolute top-40 left-1/2 transform -translate-x-1/2 w-96 h-96 bg-gradient-to-br from-indigo-300 to-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-40 animate-blob animation-delay-4000"></div>
+        </div>
+      </section>
+
+      {/* Benefits Section - Moved here for immediate visibility */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white to-gray-50 border-t border-gray-100">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center space-x-2 rtl:space-x-reverse bg-gradient-to-r from-emerald-100 to-teal-100 rounded-full px-4 py-2 mb-4">
+              <CheckCircleIcon className="h-4 w-4 text-emerald-600" />
+              <span className="text-emerald-700 font-medium text-sm">
+                {t("benefits.tag")}
+              </span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+              {t("benefits.title")}
+              <span className="block bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+                {t("benefits.titleHighlight")}
+              </span>
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              {t("benefits.subtitle")}
+            </p>
+          </div>
+
+          {/* Main Benefits - Enhanced design */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            {benefits.map((benefit, index) => (
+              <div
+                key={benefit.title}
+                className="relative group"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <div className="relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-200 hover:border-gray-300 transform hover:-translate-y-3 h-full">
+                  {/* Colored top border */}
+                  <div
+                    className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${benefit.color} rounded-t-2xl`}
+                  ></div>
+
+                  <div
+                    className={`${benefit.bgColor} rounded-xl p-3 w-fit mb-4`}
+                  >
+                    <benefit.icon className={`h-7 w-7 ${benefit.textColor}`} />
+                  </div>
+
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">
+                    {benefit.title}
+                  </h3>
+
+                  <p className="text-gray-600 leading-relaxed mb-4 text-sm">
+                    {benefit.description}
+                  </p>
+
+                  <div className="flex items-center space-x-2 rtl:space-x-reverse">
+                    <CheckCircleIcon
+                      className={`h-4 w-4 ${benefit.textColor}`}
+                    />
+                    <span
+                      className={`font-medium text-sm ${benefit.textColor}`}
+                    >
+                      {t("benefits.availableNow")}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Subtle hover glow */}
+                <div
+                  className={`absolute inset-0 bg-gradient-to-br ${benefit.color} rounded-2xl opacity-0 group-hover:opacity-10 transition-opacity duration-500 -z-10`}
+                ></div>
+              </div>
+            ))}
+          </div>
+
+          {/* Quick features list - Simplified for top placement */}
+          <div className="bg-gradient-to-r from-gray-50 to-white rounded-2xl p-6 border border-gray-200">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+              <div className="flex items-center space-x-2 rtl:space-x-reverse">
+                <CheckCircleIcon className="h-4 w-4 text-green-600 flex-shrink-0" />
+                <span className="text-gray-700 text-sm font-medium">
+                  {t("benefits.features.noRegistration")}
+                </span>
+              </div>
+              <div className="flex items-center space-x-2 rtl:space-x-reverse">
+                <CheckCircleIcon className="h-4 w-4 text-green-600 flex-shrink-0" />
+                <span className="text-gray-700 text-sm font-medium">
+                  {t("benefits.features.privacy")}
+                </span>
+              </div>
+              <div className="flex items-center space-x-2 rtl:space-x-reverse">
+                <CheckCircleIcon className="h-4 w-4 text-green-600 flex-shrink-0" />
+                <span className="text-gray-700 text-sm font-medium">
+                  {t("benefits.features.templates")}
+                </span>
+              </div>
+              <div className="flex items-center space-x-2 rtl:space-x-reverse">
+                <CheckCircleIcon className="h-4 w-4 text-green-600 flex-shrink-0" />
+                <span className="text-gray-700 text-sm font-medium">
+                  {t("benefits.features.autoSave")}
+                </span>
+              </div>
+              <div className="flex items-center space-x-2 rtl:space-x-reverse">
+                <CheckCircleIcon className="h-4 w-4 text-green-600 flex-shrink-0" />
+                <span className="text-gray-700 text-sm font-medium">
+                  {t("benefits.features.bilingual")}
+                </span>
+              </div>
+              <div className="flex items-center space-x-2 rtl:space-x-reverse">
+                <CheckCircleIcon className="h-4 w-4 text-green-600 flex-shrink-0" />
+                <span className="text-gray-700 text-sm font-medium">
+                  {t("benefits.features.community")}
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

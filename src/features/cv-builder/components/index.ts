@@ -1,10 +1,13 @@
-export { CVPreview } from "./CVPreview";
-export { FormField } from "./FormField";
 export { PersonalInfoForm } from "./PersonalInfoForm";
 export { WorkExperienceForm } from "./WorkExperienceForm";
 export { EducationForm } from "./EducationForm";
+export { SkillsForm } from "./SkillsForm";
+export { ProjectsForm } from "./ProjectsForm";
 export { SkillsProjectsForm } from "./SkillsProjectsForm";
 export { ReviewForm } from "./ReviewForm";
+export { CVPreview } from "./CVPreview";
 export { StepIndicator } from "./StepIndicator";
+export { FormField } from "./FormField";
+export { SaveStatusIndicator } from "./SaveStatusIndicator";
 export { TemplateSelector } from "./TemplateSelector";
 export { StepPlaceholder } from "./StepPlaceholder";

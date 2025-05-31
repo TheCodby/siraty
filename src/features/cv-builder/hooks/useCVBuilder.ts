@@ -186,7 +186,7 @@ export const useCVBuilder = () => {
   const nextStep = useCallback(() => {
     setState((prev) => ({
       ...prev,
-      currentStep: Math.min(prev.currentStep + 1, 5),
+      currentStep: Math.min(prev.currentStep + 1, 6),
     }));
   }, []);
 
@@ -200,7 +200,7 @@ export const useCVBuilder = () => {
   const goToStep = useCallback((step: number) => {
     setState((prev) => ({
       ...prev,
-      currentStep: Math.max(1, Math.min(step, 5)),
+      currentStep: Math.max(1, Math.min(step, 6)),
     }));
   }, []);
 

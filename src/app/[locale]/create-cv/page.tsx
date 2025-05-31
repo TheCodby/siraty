@@ -6,6 +6,7 @@ import {
   Briefcase,
   GraduationCap,
   Code,
+  FolderOpen,
   Download,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -17,7 +18,8 @@ import {
 import { PersonalInfoForm } from "@/features/cv-builder/components/PersonalInfoForm";
 import { WorkExperienceForm } from "@/features/cv-builder/components/WorkExperienceForm";
 import { EducationForm } from "@/features/cv-builder/components/EducationForm";
-import { SkillsProjectsForm } from "@/features/cv-builder/components/SkillsProjectsForm";
+import { SkillsForm } from "@/features/cv-builder/components/SkillsForm";
+import { ProjectsForm } from "@/features/cv-builder/components/ProjectsForm";
 import { ReviewForm } from "@/features/cv-builder/components/ReviewForm";
 import { CVPreview } from "@/features/cv-builder/components/CVPreview";
 import { SaveStatusIndicator } from "@/features/cv-builder/components/SaveStatusIndicator";
@@ -51,13 +53,20 @@ export default function CreateCVPage() {
     },
     {
       id: 4,
-      name: tSteps("skillsProjects"),
-      description: t("stepDescriptions.skillsProjects"),
+      name: tSteps("skills"),
+      description: t("stepDescriptions.skills"),
       icon: Code,
       status: "upcoming",
     },
     {
       id: 5,
+      name: tSteps("projects"),
+      description: t("stepDescriptions.projects"),
+      icon: FolderOpen,
+      status: "upcoming",
+    },
+    {
+      id: 6,
       name: tSteps("review"),
       description: t("stepDescriptions.review"),
       icon: Download,
@@ -113,16 +122,23 @@ export default function CreateCVPage() {
         );
       case 4:
         return (
-          <SkillsProjectsForm
-            skills={cvData.skills}
-            projects={cvData.projects}
-            onUpdateSkills={updateSkills}
-            onUpdateProjects={updateProjects}
+          <SkillsForm
+            data={cvData.skills}
+            onUpdate={updateSkills}
             onNext={nextStep}
             onPrevious={previousStep}
           />
         );
       case 5:
+        return (
+          <ProjectsForm
+            data={cvData.projects}
+            onUpdate={updateProjects}
+            onNext={nextStep}
+            onPrevious={previousStep}
+          />
+        );
+      case 6:
         return (
           <ReviewForm
             cvData={cvData}
