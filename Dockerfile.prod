@@ -89,6 +89,9 @@ COPY --from=builder /app/public ./public
 # Set the correct permission for prerender cache
 RUN mkdir .next && chown nextjs:nodejs .next
 
+# Create temp directory for PDF generation with proper permissions
+RUN mkdir -p temp/pdf && chown -R nextjs:nodejs temp && chmod -R 755 temp
+
 # Copy built application
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
