@@ -55,7 +55,10 @@
     },
     "footer": {
       "tagline": "Building better careers with AI-powered tools",
-      "copyright": "© {year} Siraty. All rights reserved."
+      "copyright": "© {year} Siraty. All rights reserved.",
+      "privacy": "Privacy Policy",
+      "terms": "Terms & Conditions",
+      "learnMore": "Learn More"
     },
     "benefits": {
       "tag": "Why Choose سيرتي",
@@ -306,7 +309,8 @@
     "error": "An error occurred",
     "success": "Success",
     "required": "This field is required",
-    "optional": "Optional"
+    "optional": "Optional",
+    "backHome": "Back to Home"
   },
   "development": {
     "inProgress": "Development in Progress",
@@ -364,6 +368,193 @@
       "noSession": "No LinkedIn session found",
       "importFailed": "Failed to import profile data",
       "networkError": "Network error occurred"
+    }
+  },
+  "comingSoon": {
+    "badge": "Coming Soon",
+    "notify": "We're working hard to bring you this feature. Start building your CV now and come back for more!",
+    "createNow": "Create CV Now",
+    "improveCV": {
+      "title": "AI-Powered CV Improvement",
+      "description": "Chat with our intelligent AI assistant to enhance your resume content, improve wording, and get personalized suggestions for maximum impact.",
+      "features": {
+        "aiSuggestions": "Smart AI Suggestions",
+        "aiSuggestionsDesc": "Get intelligent recommendations to improve your resume content and structure.",
+        "realTime": "Real-time Feedback",
+        "realTimeDesc": "Receive instant feedback as you make changes to optimize your CV.",
+        "industry": "Industry-specific Tips",
+        "industryDesc": "Get tailored advice based on your target industry and role."
+      }
+    },
+    "matchJD": {
+      "title": "Job Description Matching",
+      "description": "Upload a job description and see how well your CV matches the requirements. Get detailed insights and recommendations to improve your chances.",
+      "features": {
+        "smartAnalysis": "Smart Analysis",
+        "smartAnalysisDesc": "Advanced AI analysis of job requirements vs your qualifications.",
+        "gapAnalysis": "Gap Analysis",
+        "gapAnalysisDesc": "Identify missing skills and experience to focus your development.",
+        "recommendations": "Tailored Recommendations",
+        "recommendationsDesc": "Get specific suggestions to improve your match score."
+      }
+    },
+    "atsScore": {
+      "title": "ATS Score & Optimization",
+      "description": "Get your Applicant Tracking System (ATS) compatibility score and detailed recommendations to ensure your CV passes automated screening systems.",
+      "features": {
+        "scoreAnalysis": "Comprehensive Scoring",
+        "scoreAnalysisDesc": "Detailed analysis of how ATS systems will parse and score your CV.",
+        "formatting": "Format Optimization",
+        "formattingDesc": "Ensure your CV format is ATS-friendly and readable by machines.",
+        "optimization": "Keyword Optimization",
+        "optimizationDesc": "Optimize keywords and phrases to improve your ATS ranking."
+      }
+    }
+  },
+  "privacy": {
+    "badge": "Privacy & Security",
+    "title": "Privacy Policy",
+    "subtitle": "We respect your privacy and are committed to protecting your personal information. Learn how we collect, use, and safeguard your data.",
+    "lastUpdated": "Last updated",
+    "date": "December 2024",
+    "introduction": {
+      "title": "Our Commitment to Privacy",
+      "content": "At سيرتي (Siraty), we believe that privacy is a fundamental right. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our CV building platform. We are committed to transparency and giving you control over your personal data."
+    },
+    "sections": {
+      "dataCollection": {
+        "title": "Information We Collect",
+        "content": "We collect information you provide directly to us when using our platform:\n\n• Personal information (name, email, phone number, location)\n• Professional information (work experience, education, skills)\n• CV content and formatting preferences\n• Usage analytics and performance metrics\n\nWe do not collect sensitive personal information beyond what is necessary for CV creation. All data collection is voluntary and transparent."
+      },
+      "dataUsage": {
+        "title": "How We Use Your Information",
+        "content": "We use the collected information to:\n\n• Generate and format your CV documents\n• Provide AI-powered suggestions and improvements\n• Analyze ATS compatibility and optimization\n• Improve our platform and user experience\n• Provide customer support when needed\n\nWe never use your personal information for advertising or sell it to third parties."
+      },
+      "dataStorage": {
+        "title": "Data Storage and Security",
+        "content": "Your data security is our priority:\n\n• All data is stored securely using industry-standard encryption\n• CV data is primarily stored locally in your browser\n• Server-side storage is minimal and temporary\n• We implement regular security audits and updates\n• Access to personal data is strictly controlled\n\nWe retain data only as long as necessary to provide our services."
+      },
+      "dataSharing": {
+        "title": "Information Sharing",
+        "content": "We do not sell, trade, or otherwise transfer your personal information to third parties, except:\n\n• With your explicit consent\n• To comply with legal obligations\n• To protect our rights and safety\n• With service providers under strict confidentiality agreements\n\nAs an open-source project, our code is public, but your personal data remains private."
+      },
+      "userRights": {
+        "title": "Your Rights and Choices",
+        "content": "You have the right to:\n\n• Access your personal data\n• Correct inaccurate information\n• Delete your data (right to be forgotten)\n• Export your data in a portable format\n• Opt-out of data collection\n• Request information about data processing\n\nTo exercise these rights, please contact us using the information below."
+      }
+    },
+    "contact": {
+      "title": "Contact Us",
+      "content": "If you have any questions about this Privacy Policy or our data practices, please contact us:",
+      "email": "Email"
+    }
+  },
+  "terms": {
+    "badge": "Legal Terms",
+    "title": "Terms & Conditions",
+    "subtitle": "Please read these terms carefully before using our platform. By using سيرتي, you agree to comply with and be bound by these terms.",
+    "lastUpdated": "Last updated",
+    "date": "December 2024",
+    "introduction": {
+      "title": "Agreement to Terms",
+      "content": "By accessing and using سيرتي (\"the Service\"), you accept and agree to be bound by the terms and provision of this agreement. These Terms of Service govern your use of our CV building platform and all related services."
+    },
+    "sections": {
+      "acceptance": {
+        "title": "Acceptance of Terms",
+        "content": "By using our service, you acknowledge that you have read, understood, and agree to these terms. If you do not agree to these terms, please do not use our platform.\n\nWe may modify these terms at any time. Continued use of the service after changes constitutes acceptance of the modified terms."
+      },
+      "useLicense": {
+        "title": "Use License",
+        "content": "Permission is granted to temporarily use سيرتي for personal and commercial CV creation purposes. This license shall automatically terminate if you violate any of these restrictions.\n\nYou may not:\n• Modify or copy the platform materials\n• Use materials for commercial purposes without permission\n• Attempt to reverse engineer any software\n• Remove copyright or proprietary notations"
+      },
+      "prohibitedUses": {
+        "title": "Prohibited Uses",
+        "content": "You may not use our service:\n\n• For any unlawful purpose or activity\n• To transmit malicious code or harmful content\n• To violate any international, federal, provincial, or state regulations or laws\n• To impersonate or attempt to impersonate others\n• To harvest or collect user information\n• To interfere with platform security features"
+      },
+      "serviceAvailability": {
+        "title": "Service Availability",
+        "content": "We strive to maintain continuous service availability but cannot guarantee uninterrupted access. The service is provided \"as is\" without warranties of any kind.\n\nWe reserve the right to:\n• Modify or discontinue the service\n• Restrict access for maintenance\n• Update features and functionality\n• Change terms of service"
+      },
+      "disclaimer": {
+        "title": "Disclaimer",
+        "content": "The information on this platform is provided on an \"as is\" basis. To the fullest extent permitted by law, we exclude all representations, warranties, and conditions relating to our platform and its use.\n\nWe are not responsible for:\n• Employment outcomes or job application results\n• Third-party content or services\n• Data loss or technical issues\n• Decisions made by ATS systems or employers"
+      }
+    },
+    "contact": {
+      "title": "Legal Contact",
+      "content": "For legal matters or questions about these terms, please contact us:",
+      "email": "Email"
+    }
+  },
+  "learnMore": {
+    "badge": "Learn More",
+    "title": "About سيرتي",
+    "subtitle": "Discover how our AI-powered platform is revolutionizing the way people create and optimize their resumes for career success.",
+    "introduction": {
+      "title": "Revolutionizing CV Creation",
+      "content": "سيرتي is more than just a CV builder – it's your intelligent career companion. Built by developers for everyone, our platform combines cutting-edge AI technology with user-friendly design to help you create compelling resumes that get noticed by both humans and ATS systems. Whether you're a recent graduate or an experienced professional, سيرتي adapts to your needs and helps you present your best professional self."
+    },
+    "featuresSection": {
+      "title": "Powerful Features",
+      "subtitle": "Everything you need to create, improve, and optimize your resume"
+    },
+    "features": {
+      "aiPowered": {
+        "title": "AI-Powered Assistance",
+        "description": "Our intelligent AI analyzes your content and provides personalized suggestions to improve your resume's impact, ensuring your achievements shine through with compelling language and proper formatting."
+      },
+      "atsOptimization": {
+        "title": "ATS Optimization",
+        "description": "Get detailed ATS compatibility scores and optimization tips to ensure your resume passes through Applicant Tracking Systems and reaches human recruiters."
+      },
+      "jobMatching": {
+        "title": "Job Description Matching",
+        "description": "Upload job descriptions to see how well your CV matches requirements and get specific recommendations to improve your compatibility with target roles."
+      },
+      "templates": {
+        "title": "Professional Templates",
+        "description": "Choose from carefully designed, ATS-friendly templates that look professional while ensuring maximum compatibility with recruitment systems."
+      }
+    },
+    "howItWorksSection": {
+      "title": "How It Works",
+      "subtitle": "Simple steps to create your perfect resume"
+    },
+    "howItWorks": {
+      "step1": {
+        "title": "Build Your CV",
+        "description": "Use our intuitive step-by-step form to input your information, or leverage AI assistance to enhance your content as you go."
+      },
+      "step2": {
+        "title": "Optimize & Improve",
+        "description": "Get AI-powered suggestions, ATS compatibility scores, and job matching insights to refine your resume for maximum impact."
+      },
+      "step3": {
+        "title": "Export & Apply",
+        "description": "Download your optimized resume in professional formats (Word, PDF) and start applying to your dream jobs with confidence."
+      }
+    },
+    "benefitsSection": {
+      "title": "Why Choose سيرتي",
+      "subtitle": "Built with modern job seekers in mind"
+    },
+    "benefits": {
+      "noRegistration": "No registration required",
+      "freeToUse": "Completely free to use",
+      "privacyFirst": "Privacy-first approach",
+      "bilingual": "Bilingual support (Arabic/English)",
+      "openSource": "100% open source",
+      "multipleFormats": "Multiple export formats"
+    },
+    "technology": {
+      "title": "Built with Modern Technology",
+      "content": "سيرتي is built using cutting-edge web technologies including Next.js, React, TypeScript, and Tailwind CSS. Our open-source approach ensures transparency, security, and community-driven development. All code is available on GitHub for review and contribution."
+    },
+    "cta": {
+      "title": "Ready to Get Started?",
+      "subtitle": "Join thousands of users who have already created their perfect resume",
+      "button": "Create Your CV Now"
     }
   }
 }

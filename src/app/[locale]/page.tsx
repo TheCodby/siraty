@@ -145,7 +145,7 @@ export default function HomePage() {
               </Link>
 
               <Link
-                href={`/${locale}/improve-cv`}
+                href={`/${locale}/learn-more`}
                 className="group border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-xl font-semibold hover:bg-gray-50 hover:border-gray-400 transition-all duration-300 flex items-center gap-2"
               >
                 <DocumentTextIcon className="h-5 w-5" />
@@ -451,17 +451,43 @@ export default function HomePage() {
 
       {/* Footer */}
       <footer className="py-12 px-4 sm:px-6 lg:px-8 bg-gray-900 text-white">
-        <div className="max-w-7xl mx-auto text-center">
-          <div className="flex items-center justify-center mb-6">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-              <span className="text-white font-bold text-xl">س</span>
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center mb-6">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                <span className="text-white font-bold text-xl">س</span>
+              </div>
+              <span className="ml-3 text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                سيرتي
+              </span>
             </div>
-            <span className="ml-3 text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              سيرتي
-            </span>
+            <p className="text-gray-400 mb-6">{t("footer.tagline")}</p>
+
+            {/* Footer Links */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
+              <Link
+                href={`/${locale}/privacy`}
+                className="text-gray-400 hover:text-white transition-colors duration-200"
+              >
+                {t("footer.privacy")}
+              </Link>
+              <div className="hidden sm:block w-1 h-1 bg-gray-600 rounded-full"></div>
+              <Link
+                href={`/${locale}/terms`}
+                className="text-gray-400 hover:text-white transition-colors duration-200"
+              >
+                {t("footer.terms")}
+              </Link>
+              <div className="hidden sm:block w-1 h-1 bg-gray-600 rounded-full"></div>
+              <Link
+                href={`/${locale}/learn-more`}
+                className="text-gray-400 hover:text-white transition-colors duration-200"
+              >
+                {t("footer.learnMore")}
+              </Link>
+            </div>
           </div>
-          <p className="text-gray-400 mb-4">{t("footer.tagline")}</p>
-          <p className="text-gray-500 text-sm">
+          <p className="text-gray-500 text-sm text-center">
             {t("footer.copyright", { year: new Date().getFullYear() })}
           </p>
         </div>
