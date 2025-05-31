@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { User, Linkedin } from "lucide-react";
+import { User } from "lucide-react";
 import { z } from "zod";
 import { useTranslations, useLocale } from "next-intl";
 import {
@@ -15,8 +15,6 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { FormField } from "./FormField";
 import { personalInfoSchema, getObjectErrors } from "@/lib/validations/cv";
-import { LinkedInSyncButton } from "@/features/linkedin-sync/components/LinkedInSyncButton";
-import { LinkedInCVData } from "@/features/linkedin-sync/types";
 import type { PersonalInfo } from "@/types";
 
 interface PersonalInfoFormProps {
@@ -38,7 +36,6 @@ export const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
   const t = useTranslations("cvBuilder.personalInfo");
   const cvBuilder = useTranslations("cvBuilder");
   const tCommon = useTranslations("common");
-  const tLinkedIn = useTranslations("linkedIn");
   const tSteps = useTranslations("cvBuilder.steps");
   const locale = useLocale();
   const isRTL = locale === "ar";
@@ -71,29 +68,6 @@ export const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
     }
   };
 
-  const handleLinkedInSync = (linkedInData: LinkedInCVData) => {
-    // Map LinkedIn data to PersonalInfo format
-    const updatedData: PersonalInfo = {
-      fullName: linkedInData.personalInfo.fullName || data.fullName,
-      email: linkedInData.personalInfo.email || data.email,
-      phone: linkedInData.personalInfo.phone || data.phone,
-      location: linkedInData.personalInfo.location || data.location,
-      summary: linkedInData.personalInfo.headline || data.summary,
-      linkedIn: data.linkedIn, // Keep existing LinkedIn URL
-      portfolio: data.portfolio, // Keep existing portfolio
-    };
-
-    onUpdate(updatedData);
-
-    // Show success message
-    console.log("LinkedIn data imported successfully!");
-  };
-
-  const handleSyncError = (error: string) => {
-    console.error("LinkedIn sync failed:", error);
-    // You could show a toast notification here
-  };
-
   const handleNext = () => {
     if (validateForm()) {
       onNext();
@@ -116,30 +90,6 @@ export const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
 
       <CardContent className="space-y-6">
         {/* LinkedIn Import Section */}
-        <Card className="bg-blue-50 border-blue-200">
-          <CardHeader className="pb-3">
-            <CardTitle
-              className={`text-lg flex items-center gap-2 ${
-                isRTL ? "flex-row-reverse" : "flex-row"
-              }`}
-            >
-              <Linkedin className="h-5 w-5 text-blue-600" />
-              {tLinkedIn("import")}
-            </CardTitle>
-            <CardDescription>
-              {tLinkedIn("limitations.description")}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <LinkedInSyncButton
-              onSyncComplete={handleLinkedInSync}
-              onSyncError={handleSyncError}
-              className="w-full"
-            />
-          </CardContent>
-        </Card>
-
-        <Separator />
 
         <div
           className={`grid grid-cols-1 md:grid-cols-2 gap-6 ${
