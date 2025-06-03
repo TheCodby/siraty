@@ -14,6 +14,7 @@ import {
   DocumentIcon,
   ShieldCheckIcon,
 } from "@heroicons/react/24/outline";
+import { Github } from "lucide-react";
 
 export default function HomePage() {
   const t = useTranslations("home");
@@ -62,6 +63,7 @@ export default function HomePage() {
       color: "from-green-500 to-emerald-500",
       bgColor: "bg-green-50",
       textColor: "text-green-700",
+      link: "https://github.com/yourusername/siraty",
     },
     {
       title: t("benefits.fileFormats.title"),
@@ -208,15 +210,29 @@ export default function HomePage() {
                     {benefit.description}
                   </p>
 
-                  <div className="flex items-center space-x-2 rtl:space-x-reverse">
-                    <CheckCircleIcon
-                      className={`h-4 w-4 ${benefit.textColor}`}
-                    />
-                    <span
-                      className={`font-medium text-sm ${benefit.textColor}`}
-                    >
-                      {t("benefits.availableNow")}
-                    </span>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2 rtl:space-x-reverse">
+                      <CheckCircleIcon
+                        className={`h-4 w-4 ${benefit.textColor}`}
+                      />
+                      <span
+                        className={`font-medium text-sm ${benefit.textColor}`}
+                      >
+                        {t("benefits.availableNow")}
+                      </span>
+                    </div>
+
+                    {benefit.link && (
+                      <a
+                        href={benefit.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors ${benefit.textColor}`}
+                        title="View on GitHub"
+                      >
+                        <Github className="w-4 h-4" />
+                      </a>
+                    )}
                   </div>
                 </div>
 
@@ -381,6 +397,25 @@ export default function HomePage() {
             </div>
             <p className="text-gray-400 mb-6">{t("footer.tagline")}</p>
 
+            {/* Social Links */}
+            <div className="flex justify-center items-center gap-4 mb-6">
+              <a
+                href="https://github.com/yourusername/siraty"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-all duration-200 hover:scale-105"
+                title="View Source Code on GitHub"
+              >
+                <Github className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" />
+              </a>
+              <div className="px-4 py-2 bg-gradient-to-r from-green-600 to-emerald-600 rounded-lg">
+                <span className="text-sm font-medium flex items-center gap-2">
+                  <CodeBracketIcon className="w-4 h-4" />
+                  Open Source
+                </span>
+              </div>
+            </div>
+
             {/* Footer Links */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
               <Link
@@ -403,6 +438,16 @@ export default function HomePage() {
               >
                 {t("footer.learnMore")}
               </Link>
+              <div className="hidden sm:block w-1 h-1 bg-gray-600 rounded-full"></div>
+              <a
+                href="https://github.com/yourusername/siraty"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors duration-200 flex items-center gap-1"
+              >
+                <Github className="w-4 h-4" />
+                Source Code
+              </a>
             </div>
           </div>
           <p className="text-gray-500 text-sm text-center">

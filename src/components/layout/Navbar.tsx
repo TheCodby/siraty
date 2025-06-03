@@ -14,6 +14,7 @@ import {
   ChevronDownIcon,
   GlobeAltIcon,
 } from "@heroicons/react/24/outline";
+import { Github } from "lucide-react";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -138,6 +139,17 @@ const Navbar = () => {
 
           {/* Right side controls */}
           <div className="flex items-center space-x-3 rtl:space-x-reverse">
+            {/* GitHub Link */}
+            <a
+              href="https://github.com/TheCodby/siraty"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2.5 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 rounded-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-sm group"
+              title="View Source Code on GitHub"
+            >
+              <Github className="w-4 h-4 group-hover:scale-110 transition-transform" />
+            </a>
+
             {/* Language Switcher */}
             <div className="relative">
               <button
@@ -287,6 +299,23 @@ const Navbar = () => {
               </Link>
             );
           })}
+
+          {/* GitHub Link for Mobile */}
+          <a
+            href="https://github.com/TheCodby/siraty"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setIsOpen(false)}
+            className="flex items-center space-x-3 rtl:space-x-reverse px-4 py-4 rounded-xl font-medium transition-all duration-300 transform text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:scale-105"
+          >
+            <Github className="w-5 h-5" />
+            <span>Source Code</span>
+            <div className="ml-auto rtl:mr-auto">
+              <span className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs rounded-full font-medium">
+                Open Source
+              </span>
+            </div>
+          </a>
 
           {/* Mobile CTA */}
           <div className="pt-4 mt-4 border-t border-gray-200 dark:border-gray-700">

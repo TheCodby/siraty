@@ -10,7 +10,6 @@ import {
   Download,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import Navbar from "@/components/layout/Navbar";
 import {
   StepIndicator,
   type Step,
@@ -155,8 +154,6 @@ export default function CreateCVPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-300">
-      <Navbar />
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <div className="text-center mb-12">
