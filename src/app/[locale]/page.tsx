@@ -2,7 +2,6 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import Image from "next/image";
 import { useLocale } from "next-intl";
-import Navbar from "@/components/layout/Navbar";
 import {
   DocumentTextIcon,
   SparklesIcon,
@@ -84,10 +83,8 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-300">
-      <Navbar />
-
       {/* Hero Section */}
-      <section className="relative overflow-hidden pt-16 pb-24 px-4 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden pt-24 pb-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
             <div className="inline-flex items-center space-x-2 rtl:space-x-reverse bg-gradient-to-r from-blue-100 to-purple-100 rounded-full px-4 py-2 mb-8">

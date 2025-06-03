@@ -556,5 +556,133 @@
       "subtitle": "Join thousands of users who have already created their perfect resume",
       "button": "Create Your CV Now"
     }
+  },
+  "ai": {
+    "chat": {
+      "title": "AI Career Assistant",
+      "subtitle": "Get personalized advice to improve your CV",
+      "placeholder": "Ask me anything about your CV or career...",
+      "sendButton": "Send",
+      "clearChat": "Clear Chat",
+      "examples": {
+        "title": "Try asking:",
+        "items": [
+          "How can I improve my professional summary?",
+          "What skills should I add for a software engineer role?",
+          "How do I highlight my achievements better?",
+          "What's missing from my work experience section?"
+        ]
+      },
+      "thinking": "AI is thinking...",
+      "error": "Sorry, something went wrong. Please try again.",
+      "welcome": "Hi! I'm your AI career assistant. I can help you improve your CV, suggest better wording, or answer any career-related questions. How can I help you today?",
+      "emptyState": {
+        "title": "Start Your Conversation",
+        "subtitle": "Ask me anything about your CV or career goals"
+      }
+    },
+    "atsScore": {
+      "title": "ATS Score Analysis",
+      "subtitle": "See how well your CV performs with applicant tracking systems",
+      "analyzeButton": "Analyze My CV",
+      "analyzing": "Analyzing your CV...",
+      "overallScore": "Overall ATS Score",
+      "passRate": "Estimated Pass Rate",
+      "categories": {
+        "title": "Category Breakdown",
+        "formatting": "Formatting & Structure",
+        "keywords": "Keywords Optimization",
+        "experience": "Experience Relevance",
+        "education": "Education Format",
+        "skills": "Skills Presentation"
+      },
+      "feedback": {
+        "title": "Detailed Feedback",
+        "matched": "Matched Keywords",
+        "missing": "Missing Keywords",
+        "recommendations": "Recommendations"
+      },
+      "scoreRanges": {
+        "excellent": "Excellent",
+        "good": "Good",
+        "average": "Average",
+        "needsWork": "Needs Work"
+      },
+      "emptyState": {
+        "title": "Get Your ATS Score",
+        "subtitle": "Upload or create a CV to see how it performs with ATS systems",
+        "action": "Upload CV"
+      }
+    },
+    "jobMatch": {
+      "title": "Job Match Analysis",
+      "subtitle": "See how well your CV matches job requirements",
+      "analyzeButton": "Match With Job",
+      "analyzing": "Analyzing job match...",
+      "overallMatch": "Overall Match",
+      "skillsMatch": {
+        "title": "Skills Match",
+        "matched": "Matched Skills",
+        "missing": "Missing Skills",
+        "percentage": "Match Percentage"
+      },
+      "experienceMatch": {
+        "title": "Experience Match",
+        "relevant": "Experience Relevant",
+        "yearsMatch": "Years of Experience Match",
+        "percentage": "Match Percentage"
+      },
+      "educationMatch": {
+        "title": "Education Match",
+        "relevant": "Education Relevant",
+        "percentage": "Match Percentage"
+      },
+      "recommendations": "Recommendations",
+      "improvementAreas": {
+        "title": "Areas for Improvement",
+        "priority": {
+          "high": "High Priority",
+          "medium": "Medium Priority",
+          "low": "Low Priority"
+        }
+      },
+      "jobDescription": {
+        "title": "Job Description",
+        "placeholder": "Paste the job description here..."
+      },
+      "emptyState": {
+        "title": "Match Your CV with Jobs",
+        "subtitle": "Paste a job description to see how well your CV matches",
+        "action": "Add Job Description"
+      }
+    },
+    "suggestions": {
+      "title": "CV Enhancement Suggestions",
+      "subtitle": "AI-powered recommendations to improve your CV",
+      "generateButton": "Get Suggestions",
+      "generating": "Generating suggestions...",
+      "targetRole": {
+        "label": "Target Role (Optional)",
+        "placeholder": "e.g., Software Engineer, Product Manager..."
+      },
+      "suggestions": "Suggestions",
+      "emptyState": {
+        "title": "Get Personalized Suggestions",
+        "subtitle": "Let AI analyze your CV and provide improvement recommendations",
+        "action": "Generate Suggestions"
+      }
+    },
+    "common": {
+      "loading": "Loading...",
+      "error": "An error occurred",
+      "retry": "Try Again",
+      "close": "Close",
+      "save": "Save",
+      "copy": "Copy",
+      "copied": "Copied!",
+      "rateLimitError": "Too many requests. Please wait a moment.",
+      "networkError": "Network error. Please check your connection.",
+      "invalidResponse": "Invalid response from AI. Please try again."
+    }
   }
 }

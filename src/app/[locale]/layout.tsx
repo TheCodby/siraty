@@ -4,6 +4,7 @@ import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { Providers } from "@/app/providers";
+import Navbar from "@/components/layout/Navbar";
 import "../globals.css";
 
 export const metadata: Metadata = {
@@ -197,6 +198,9 @@ export default async function LocaleLayout({
 
             {/* Main application container */}
             <div className="min-h-screen flex flex-col">
+              {/* Navigation */}
+              <Navbar />
+
               {/* Main content area */}
               <main id="main-content" className="flex-1">
                 {children}
